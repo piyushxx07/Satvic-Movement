@@ -1,10 +1,10 @@
-import type { HTMLAttributes } from "react"
+import type { HTMLAttributes, Ref } from "react"
 
 const PHONE_WIDTH = 433
 const PHONE_HEIGHT = 882
 const SCREEN_X = 21.25
 const SCREEN_Y = 19.25
-const SCREEN_WIDTH = 389.5
+const SCREEN_WIDTH = 390.5
 const SCREEN_HEIGHT = 843.5
 const SCREEN_RADIUS = 55.75
 
@@ -19,6 +19,9 @@ const RADIUS_V = (SCREEN_RADIUS / SCREEN_HEIGHT) * 100
 export interface IphoneProps extends HTMLAttributes<HTMLDivElement> {
   src?: string
   videoSrc?: string
+  videoRef?: Ref<HTMLVideoElement>
+  videoAutoPlay?: boolean
+  videoMuted?: boolean
 }
 
 export function Iphone({
@@ -26,6 +29,9 @@ export function Iphone({
   videoSrc,
   className,
   style,
+  videoRef,
+  videoAutoPlay = true,
+  videoMuted = true,
   ...props
 }: IphoneProps) {
   const hasVideo = !!videoSrc
@@ -52,11 +58,12 @@ export function Iphone({
           }}
         >
           <video
+            ref={videoRef}
             className="block size-full object-cover"
             src={videoSrc}
-            autoPlay
+            autoPlay={videoAutoPlay}
             loop
-            muted
+            muted={videoMuted}
             playsInline
             preload="metadata"
           />
@@ -123,7 +130,7 @@ export function Iphone({
         />
 
         <path
-          d={`M${SCREEN_X} 75C${SCREEN_X} 44.2101 46.2101 ${SCREEN_Y} 77 ${SCREEN_Y}H355C385.79 ${SCREEN_Y} 410.75 44.2101 410.75 75V807C410.75 837.79 385.79 862.75 355 862.75H77C46.2101 862.75 ${SCREEN_X} 837.79 ${SCREEN_X} 807V75Z`}
+          d={`M${SCREEN_X} 75C${SCREEN_X} 44.2101 46.2101 ${SCREEN_Y} 77 ${SCREEN_Y}H356C386.79 ${SCREEN_Y} 411.75 44.2101 411.75 75V807C411.75 837.79 386.79 862.75 356 862.75H77C46.2101 862.75 ${SCREEN_X} 837.79 ${SCREEN_X} 807V75Z`}
           className="fill-[#E5E5E5] stroke-[#E5E5E5] stroke-[0.5] dark:fill-[#404040] dark:stroke-[#404040]"
           mask={hasMedia ? "url(#screenPunch)" : undefined}
         />
