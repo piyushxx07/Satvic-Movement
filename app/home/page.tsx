@@ -2,6 +2,7 @@
 
 import { PointerEvent, CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 import TargetCursor from "../../components/TargetCursor";
+import { Iphone } from "@/components/ui/iphone";
 
 const brandName = "Satvic Movement";
 const highlightDuration = (brandName.length - 1) * 45 + 520;
@@ -120,6 +121,19 @@ export default function StudioHome() {
         onPointerLeave={() => setDotPointer(null)}
       >
         <div className={`dot-matrix${dotPointer ? " is-visible" : ""}`} style={dotStyle} aria-hidden="true" />
+        <div className="hero-layout">
+          <div className="hero-copy">
+            <p className="hero-eyebrow"><span /> SATVIC VIDEO LANGUAGE STUDIO</p>
+            <h1>One story.<br /><span>Every language.</span></h1>
+            <p className="hero-description">A home for Satvic videos to find new voices — from the original to the final upload.</p>
+            <div className="hero-language-list" aria-label="Available dubbing languages">
+              <span>Tamil</span><span>Telugu</span><span>Kannada</span><span className="more-languages">+ more</span>
+            </div>
+          </div>
+          <div className="hero-device">
+            <Iphone src="/satvic-studio-screen.svg" className="iphone-mockup" aria-label="Satvic video language studio shown on a phone" />
+          </div>
+        </div>
       </section>
     </main>
   );
