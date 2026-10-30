@@ -24,5 +24,4 @@ Videos/States/**/*.avi
 Videos/States/**/*.mp3
 Videos/States/**/*.wav
 Videos/States/**/*.m4a
-!Videos/States/Maharashtra/Hindi/Hindi-Marathi.mp4
-!Videos/States/Maharashtra/Marathi/Marathi.mp4
+!Videos/States/**/*.mp4
