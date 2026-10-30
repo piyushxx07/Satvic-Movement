@@ -107,7 +107,7 @@ export default function StudioHome() {
         <button className="chance-button cursor-target" data-cursor-label="Open" type="button">
           <span>Give me a Chance</span>
           <span className="chance-button-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" /></svg>
+            <svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M8 7h9v9" /></svg>
           </span>
         </button>
       </header>

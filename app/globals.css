@@ -64,13 +64,13 @@ body {
 .home-page { min-height: 100vh; min-height: 100svh; background: #fff; }
 .home-nav {
   height: 70px;
-  padding: 0 clamp(20px, 5vw, 72px);
+  padding: 6px clamp(20px, 5vw, 72px) 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: #fff;
 }
-.home-brand { display: inline-flex; align-items: center; gap: 11px; color: #202124; text-decoration: none; outline-offset: 5px; }
+.home-brand { height: 42px; display: inline-flex; align-items: center; gap: 11px; color: #202124; text-decoration: none; outline-offset: 5px; }
 .home-logo {
   width: 32px;
   height: 32px;
@@ -83,14 +83,14 @@ body {
   font-size: 17px;
   font-weight: 400;
 }
-.variable-name { display: inline-flex; align-items: baseline; white-space: nowrap; cursor: default; }
+.variable-name { display: inline-flex; align-items: center; white-space: nowrap; cursor: default; }
 .variable-name-character {
   display: inline-block;
   transform-origin: bottom;
   transition: color .1s ease-out, font-weight .1s ease-out, transform .1s ease-out;
   font-size: 20px;
   font-weight: 400;
-  line-height: 1;
+  line-height: 1.15;
 }
 .variable-name-character.is-space { width: .27em; }
 .variable-name-character.is-bold { font-weight: 600; }
@@ -101,24 +101,26 @@ body {
 }
 
 .chance-button {
-  min-height: 44px;
-  padding: 4px 5px 4px 16px;
+  width: 194px;
+  height: 46px;
+  padding: 3px 4px 3px 16px;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
+  gap: 8px;
   border: 1px solid #34383a;
   border-radius: 999px;
   background: #fff;
   color: #171a1c;
   font: inherit;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   transition: border-color .2s ease, box-shadow .2s ease;
 }
 .chance-button:hover { border-color: #3157e8; box-shadow: 0 3px 12px #3157e81c; }
 .chance-button-icon { width: 34px; height: 34px; display: grid; place-items: center; flex: 0 0 34px; overflow: hidden; border-radius: 50%; background: #3157e8; color: #fff; }
-.chance-button-icon svg { width: 20px; height: 20px; transition: transform .24s cubic-bezier(.2, .8, .2, 1); }
+.chance-button-icon svg { width: 19px; height: 19px; transition: transform .24s cubic-bezier(.2, .8, .2, 1); }
 .chance-button-icon path { stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .chance-button:hover .chance-button-icon svg, .chance-button:focus-visible .chance-button-icon svg { transform: translateX(3px); }
 
@@ -137,8 +139,9 @@ body {
 .dot-matrix.is-visible { opacity: .52; }
 
 @media (max-width: 600px) {
-  .home-nav { padding: 0 18px; }
-  .chance-button { min-height: 40px; padding-left: 12px; gap: 8px; font-size: 12px; }
+  .home-nav { padding: 6px 18px 0; }
+  .home-brand { gap: 8px; }
+  .chance-button { width: 178px; height: 42px; padding-left: 12px; font-size: 12px; }
   .chance-button-icon { width: 30px; height: 30px; flex-basis: 30px; }
 }
 @media (prefers-reduced-motion: reduce) {
