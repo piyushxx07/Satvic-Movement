@@ -19,7 +19,7 @@ body {
 .home-page { min-height: 100vh; min-height: 100svh; background: #fff; }
 .home-nav {
   height: 70px;
-  padding: 18px clamp(20px, 5vw, 72px) 0;
+  padding: 28px clamp(20px, 5vw, 72px) 0;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
