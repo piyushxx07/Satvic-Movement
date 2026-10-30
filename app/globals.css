@@ -1,15 +1,7 @@
 @import "tailwindcss";
 
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  min-height: 100%;
-  margin: 0;
-}
-
+* { box-sizing: border-box; }
+html, body { min-height: 100%; margin: 0; }
 body {
   background: #fff;
   color: #202124;
@@ -26,160 +18,83 @@ body {
   padding: 24px;
   background: #fff;
 }
-
 .typing-message {
-  min-height: 1.5em;
   width: min(100%, 36rem);
+  min-height: 1.5em;
   margin: 0;
   color: #252525;
   font-size: 22px;
   font-weight: 400;
   line-height: 1.5;
-  letter-spacing: -0.35px;
+  letter-spacing: -.35px;
   text-align: center;
 }
-
-.typing-message > span:first-child {
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-
+.typing-message > span:first-child { white-space: pre-wrap; overflow-wrap: anywhere; }
 .typing-cursor {
   display: inline-block;
   margin-left: 2px;
   color: #747474;
   animation: cursor-blink 1s steps(2, start) infinite;
 }
+@keyframes cursor-blink { to { visibility: hidden; } }
 
-@keyframes cursor-blink {
-  to { visibility: hidden; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-  }
-}
-
-@media (max-width: 600px) {
-  .typing-message {
-    min-height: 3em;
-    font-size: clamp(18px, 5.5vw, 22px);
-  }
-}
-
-.studio-page {
-  min-height: 100vh;
-  min-height: 100svh;
+.home-page { min-height: 100vh; min-height: 100svh; background: #fff; }
+.home-nav {
+  height: 70px;
+  padding: 0 clamp(20px, 5vw, 72px);
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #f0f0f0;
   background: #fff;
 }
-
-.studio-header {
-  height: 68px;
-  padding: 0 max(28px, calc((100vw - 1080px) / 2));
-  border-bottom: 1px solid #f0f0ed;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.studio-brand {
+.home-brand {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  color: #272a27;
-  font-size: 14px;
-  font-weight: 600;
+  gap: 11px;
+  color: #202124;
   text-decoration: none;
+  outline-offset: 5px;
 }
-
-.studio-brand > span:last-child {
-  color: #878b85;
-  font-weight: 400;
-}
-
-.studio-mark {
-  width: 23px;
-  height: 23px;
-  margin-right: 3px;
-  border-radius: 8px 8px 8px 2px;
+.home-logo {
+  width: 32px;
+  height: 32px;
   display: grid;
   place-items: center;
-  background: #edf2ec;
-  color: #54765a;
-  font-size: 15px;
+  flex: 0 0 32px;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 400;
 }
+.home-warp-name { width: 190px; height: 34px; min-height: 34px; overflow: visible; }
+.home-warp-name .warp-text__fallback { justify-content: flex-start; padding: 0; text-align: left; white-space: nowrap; }
 
-.studio-caption, .studio-kicker {
-  color: #969a94;
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 1.2px;
+.warp-text {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 220px;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: inherit;
 }
-
-.studio-main {
-  width: min(100% - 48px, 920px);
-  margin: 0 auto;
-  padding: 57px 0 24px;
-}
-
-.studio-kicker { margin: 0 0 10px; }
-.studio-intro h1 { margin: 0; font-size: 25px; font-weight: 400; letter-spacing: -.45px; }
-.studio-description { margin: 9px 0 0; color: #858a83; font-size: 13px; line-height: 1.6; }
-
-.overview-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-top: 31px;
-}
-
-.overview-card {
-  min-height: 103px;
-  padding: 15px 16px;
-  border: 1px solid #eeefeb;
-  border-radius: 8px;
+.warp-text canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.warp-text__fallback {
+  position: absolute;
+  inset: 0;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
+  padding: 0 7%;
+  text-align: center;
+  white-space: pre-line;
 }
-
-.overview-card > span { color: #858a83; font-size: 10px; }
-.overview-card strong { margin-top: 10px; font-size: 14px; font-weight: 500; }
-.overview-card small { margin-top: 4px; color: #999d97; font-size: 10px; }
-
-.regions-heading {
-  margin: 42px 0 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
-.regions-heading h2 { margin: 0; font-size: 16px; font-weight: 500; }
-.regions-heading p { margin: 5px 0 0; color: #898e87; font-size: 11px; }
-.folder-location { color: #9a9e98; font-size: 10px; }
-
-.region-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
-.region-card { min-height: 64px; padding: 10px 12px; border: 1px solid #eeefeb; border-radius: 7px; display: flex; align-items: center; gap: 11px; }
-.region-icon { width: 31px; height: 31px; display: grid; place-items: center; border-radius: 7px; background: #f2f5f1; color: #658269; font-size: 17px; }
-.region-copy { min-width: 0; flex: 1; }
-.region-copy h3 { overflow: hidden; margin: 0; color: #353934; font-size: 12px; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
-.region-copy p { margin: 4px 0 0; color: #92978f; font-size: 10px; }
-.region-copy p span { padding: 0 3px; color: #c0c3bd; }
-.region-count { color: #999d97; font-size: 9px; white-space: nowrap; }
-.region-arrow { color: #a3a79f; font-size: 12px; }
-.studio-footer { margin-top: 27px; padding-top: 14px; border-top: 1px solid #f0f0ed; color: #a0a49e; font-size: 10px; }
 
 @media (max-width: 600px) {
-  .studio-header { height: 60px; padding: 0 18px; }
-  .studio-caption { font-size: 7px; letter-spacing: .65px; }
-  .studio-main { width: calc(100% - 36px); padding-top: 42px; }
-  .overview-grid { gap: 7px; }
-  .overview-card { min-height: 97px; padding: 12px 9px; }
-  .overview-card > span, .overview-card small { font-size: 9px; }
-  .overview-card strong { font-size: 11px; }
-  .regions-heading { margin-top: 34px; align-items: flex-start; gap: 10px; }
-  .folder-location { padding-top: 4px; white-space: nowrap; font-size: 9px; }
-  .region-grid { grid-template-columns: 1fr; }
+  .home-nav { padding: 0 18px; }
+  .typing-message { min-height: 3em; font-size: clamp(18px, 5.5vw, 22px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
