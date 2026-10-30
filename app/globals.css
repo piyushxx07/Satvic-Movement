@@ -11,12 +11,26 @@ body {
 }
 
 .typing-page { min-height: 100vh; min-height: 100svh; display: grid; place-items: center; padding: 24px; background: #fff; }
-.typing-message { width: min(100%, 36rem); min-height: 1.5em; margin: 0; color: #252525; font-size: 22px; font-weight: 400; line-height: 1.5; letter-spacing: -.35px; text-align: center; }
+.typing-page { opacity: 1; transition: opacity .46s ease; }
+.typing-page.is-exiting { opacity: 0; }
+.typing-message { width: min(100%, 36rem); min-height: 1.5em; margin: 0; color: #252525; font-size: 22px; font-weight: 400; line-height: 1.5; letter-spacing: -.35px; text-align: center; transition: transform .46s ease, filter .46s ease; }
+.typing-page.is-exiting .typing-message { transform: translateY(-8px) scale(.98); filter: blur(3px); }
 .typing-message > span:first-child { white-space: pre-wrap; overflow-wrap: anywhere; }
 .typing-cursor { display: inline-block; margin-left: 2px; color: #747474; animation: cursor-blink 1s steps(2, start) infinite; }
 @keyframes cursor-blink { to { visibility: hidden; } }
 
-.home-page { min-height: 100vh; min-height: 100svh; background: #fff; }
+.home-page {
+  /* Adjust these values to tune the nav, heading, and player spacing. */
+  --showcase-nav-heading-gap: 80px;
+  --showcase-heading-player-gap: 0px;
+  --showcase-heading-size: 85px;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow-x: clip;
+  background: #fff;
+  animation: home-arrive .52s cubic-bezier(.2,.75,.25,1) both;
+}
+@keyframes home-arrive { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 .home-nav {
   height: 70px;
   padding: 28px clamp(20px, 5vw, 72px) 0;
@@ -79,8 +93,10 @@ body {
 .chance-button:hover .chance-button-icon svg, .chance-button:focus-visible .chance-button-icon svg { transform: rotate(0deg) translateX(1px); }
 .chance-button:focus-visible { outline: 3px solid rgb(49 87 232 / 35%); outline-offset: 3px; }
 
-.home-canvas { position: relative; display: grid; place-items: center; height: calc(100vh - 70px); height: calc(100svh - 70px); overflow: hidden; background: #fff; }
-.video-carousel { position: relative; z-index: 1; display: grid; place-items: center; width: 100%; height: 100%; touch-action: pan-y; }
+.home-canvas { position: relative; display: flex; flex-direction: column; align-items: center; gap: var(--showcase-heading-player-gap); min-height: calc(100vh - 70px); min-height: calc(100svh - 70px); overflow: visible; background: #fff; }
+.demo-showcase { position: relative; z-index: 1; display: flex; flex: 0 0 auto; flex-direction: column; align-items: center; width: 100%; height: auto; min-height: 735px; }
+.video-carousel { position: relative; display: grid; flex: 1 1 0; place-items: center; width: 100%; min-height: 0; touch-action: pan-y; }
+.demo-showcase-title { position: relative; z-index: 1; flex: 0 0 auto; margin: var(--showcase-nav-heading-gap) 0 0; color: #111; font-family: var(--font-instrument-serif), Georgia, serif; font-size: var(--showcase-heading-size); font-weight: 400; line-height: .9; letter-spacing: -.035em; text-align: center; }
 .video-preview-slot { position: absolute; top: 50%; width: 142px; height: 330px; transition: opacity .3s ease, transform .45s cubic-bezier(.2,.8,.2,1), filter .3s ease; }
 .video-preview { position: relative; width: 100%; height: 100%; padding: 0; overflow: hidden; border: 1px solid rgb(32 40 32 / 11%); border-radius: 23px; background: linear-gradient(155deg, #f4f1e9, #e9eee8 48%, #e7eaf2); box-shadow: 0 12px 32px rgb(31 43 31 / 8%); cursor: pointer; }
 .video-preview video { width: 100%; height: 100%; object-fit: cover; }
@@ -160,11 +176,18 @@ body {
 }
 
 @media (max-width: 600px) {
+  .home-page {
+    --showcase-nav-heading-gap: 0px;
+    --showcase-heading-player-gap: 0px;
+    --showcase-heading-size: clamp(45px, 12vw, 72px);
+  }
   .home-nav { padding: 18px 18px 0; }
   .home-brand { gap: 6px; }
   .variable-name-character { font-size: clamp(15px, 4vw, 20px); }
   .typing-message { min-height: 3em; font-size: clamp(18px, 5.5vw, 22px); }
-  .home-canvas { display: grid; height: auto; min-height: calc(100svh - 70px); overflow: hidden; padding: 25px 0; }
+  .dot-matrix { display: none; }
+  .home-canvas { display: flex; height: auto; min-height: calc(100svh - 70px); overflow: visible; padding: 25px 0; }
+  .demo-showcase { min-height: 735px; height: auto; flex: 0 0 auto; }
   .video-carousel { min-height: 650px; }
   .video-preview-slot { width: 92px; height: 235px; }
   .video-preview { border-radius: 16px; }
@@ -175,6 +198,9 @@ body {
   .carousel-arrow-right { right: 8px; }
   .phone-player { width: clamp(190px, 62vw, 235px); }
   .phone-controls { right: 8%; bottom: 6.5%; left: 8%; padding: 10px 9px 8px; }
+}
+@media (hover: none) and (pointer: coarse) {
+  .dot-matrix { display: none; }
 }
 @media (max-width: 520px) {
   .chance-button {

@@ -65,7 +65,7 @@ const TargetCursor = ({
   settingsRef.current = settings;
 
   useEffect(() => {
-    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const finePointer = window.matchMedia('(any-hover: hover) and (any-pointer: fine)');
     const update = () => setHost(finePointer.matches ? document.body : null);
     update();
     finePointer.addEventListener('change', update);

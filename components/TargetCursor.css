@@ -38,6 +38,3 @@
   will-change: transform, opacity;
 }
 
-@media (hover: none), (pointer: coarse) {
-  .target-cursor { display: none; }
-}

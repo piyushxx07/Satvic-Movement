@@ -12,6 +12,7 @@ const messages = [
 export default function Welcome() {
   const router = useRouter();
   const [visibleText, setVisibleText] = useState("");
+  const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
@@ -30,7 +31,8 @@ export default function Welcome() {
 
       timer = setTimeout(() => {
         if (phraseIndex === messages.length - 1) {
-          router.replace("/home");
+          setIsExiting(true);
+          timer = setTimeout(() => router.replace("/home"), 460);
           return;
         }
 
@@ -54,7 +56,7 @@ export default function Welcome() {
   }, [router]);
 
   return (
-    <main className="typing-page">
+    <main className={`typing-page${isExiting ? " is-exiting" : ""}`}>
       <h1 className="typing-message" aria-label={messages.join(". ")}>
         <span aria-hidden="true">{visibleText}</span>
         <span className="typing-cursor" aria-hidden="true">|</span>

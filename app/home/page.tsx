@@ -1,10 +1,8 @@
 "use client";
 
 import { PointerEvent, useCallback, useEffect, useRef, useState } from "react";
-import dynamic from "next/dynamic";
+import TargetCursor from "../../components/TargetCursor";
 import { Iphone } from "@/components/ui/iphone";
-
-const TargetCursor = dynamic(() => import("../../components/TargetCursor"), { ssr: false });
 
 const brandName = "Satvic Movement";
 const highlightDuration = (brandName.length - 1) * 45 + 520;
@@ -112,11 +110,10 @@ function VideoPreview({ item, onSelect, cursorLabel }: { item: VideoItem; onSele
 }
 
 export default function StudioHome() {
-  const [cursorReady, setCursorReady] = useState(false);
   const [activeIndex, setActiveIndex] = useState(4);
   const [audioLanguage, setAudioLanguage] = useState<"hindi" | "dub">("dub");
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const [isSwitching, setIsSwitching] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -126,19 +123,6 @@ export default function StudioHome() {
   const swipeStartRef = useRef<number | null>(null);
   const dotMatrixRef = useRef<HTMLDivElement | null>(null);
   const activeVideo = videoSequence[activeIndex];
-
-  useEffect(() => {
-    const enableCursor = () => {
-      if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) setCursorReady(true);
-    };
-    const idleWindow = window as Window & { requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number; cancelIdleCallback?: (id: number) => void };
-    if (idleWindow.requestIdleCallback) {
-      const task = idleWindow.requestIdleCallback(enableCursor, { timeout: 1200 });
-      return () => idleWindow.cancelIdleCallback?.(task);
-    }
-    const task = window.setTimeout(enableCursor, 500);
-    return () => window.clearTimeout(task);
-  }, []);
 
   useEffect(() => {
     playingRef.current = isPlaying;
@@ -241,7 +225,7 @@ export default function StudioHome() {
 
   return (
     <main className="home-page">
-      {cursorReady && <TargetCursor
+      <TargetCursor
         spinDuration={2}
         hoverDuration={0.2}
         size={36}
@@ -258,7 +242,7 @@ export default function StudioHome() {
         clickEffect
         hideDefaultCursor
         container={undefined}
-      />}
+      />
       <header className="home-nav">
         <SatvicBrand />
         <button className="chance-button cursor-target" data-cursor-label="Open" type="button" aria-label="Give me a Chance">
@@ -283,6 +267,8 @@ export default function StudioHome() {
         onPointerCancel={() => { swipeStartRef.current = null; }}
       >
         <div ref={dotMatrixRef} className="dot-matrix" aria-hidden="true" />
+        <h2 className="demo-showcase-title">Some Demo Videos</h2>
+        <div className="demo-showcase">
         <div className="video-carousel" aria-label="Language video carousel">
           {[-3, -2, -1, 1, 2, 3].map(offset => {
             const index = (activeIndex + offset + videoSequence.length) % videoSequence.length;
@@ -348,6 +334,7 @@ export default function StudioHome() {
               </button>
             </div>
           </div>
+        </div>
         </div>
         </div>
       </section>
