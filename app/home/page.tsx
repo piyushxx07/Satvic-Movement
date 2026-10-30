@@ -104,10 +104,14 @@ export default function StudioHome() {
             })}
           </span>
         </a>
-        <a className="change-button cursor-target" data-cursor-label="Change" href="#">
-          <span>Pitch Your Idea</span>
-          <span className="change-button__arrow" aria-hidden="true">↗</span>
-        </a>
+        <button className="chance-button cursor-target" data-cursor-label="Open" type="button" aria-label="Give me a Chance">
+          <span>Give me a Chance</span>
+          <span className="chance-button-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M5 12h14M13 5l7 7-7 7" />
+            </svg>
+          </span>
+        </button>
       </header>
       <section
         className="home-canvas"

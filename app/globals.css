@@ -55,35 +55,26 @@ body {
   45% { color: #3157e8; font-variation-settings: "wght" 900, "opsz" 40; transform: translateY(-2px) scale(1.16); }
 }
 
-.change-button {
+.chance-button {
+  min-height: 39px;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
-  height: 48px;
-  padding: 4px 5px 4px 17px;
-  border: 1px solid #111;
+  gap: 8px;
+  padding: 4px 5px 4px 14px;
+  border: 1px solid #111827;
   border-radius: 999px;
   background: #fff;
-  color: #111;
-  font: 400 17px/1.2 "Gilroy", "Helvetica Neue", Arial, sans-serif;
-  text-decoration: none;
-  transition: border-color 220ms ease;
+  color: #111827;
+  font: 500 13px/1 "Roboto Flex", "Poppins", sans-serif;
+  cursor: pointer;
+  transition: background-color 180ms ease, color 180ms ease, box-shadow 180ms ease;
 }
-.change-button__arrow {
-  width: 36px;
-  height: 36px;
-  display: grid;
-  place-items: center;
-  flex: 0 0 36px;
-  border-radius: 50%;
-  background: #3157e8;
-  color: #fff;
-  font: 400 21px/1 Arial, sans-serif;
-  transition: transform 220ms ease;
-}
-.change-button:hover .change-button__arrow { transform: rotate(45deg); }
-.change-button:focus-visible { outline: 3px solid rgb(49 87 232 / 35%); outline-offset: 3px; }
+.chance-button-icon { width: 29px; height: 29px; display: grid; flex: 0 0 29px; place-items: center; overflow: hidden; border-radius: 50%; background: #3157e8; color: #fff; }
+.chance-button-icon svg { width: 22px; height: 22px; transform: rotate(-45deg); transition: transform 220ms cubic-bezier(.2, .8, .2, 1); }
+.chance-button-icon path { stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; }
+.chance-button:hover, .chance-button:focus-visible { color: #000; box-shadow: 0 8px 24px rgb(7 14 29 / 10%); }
+.chance-button:hover .chance-button-icon svg, .chance-button:focus-visible .chance-button-icon svg { transform: rotate(0deg) translateX(1px); }
+.chance-button:focus-visible { outline: 3px solid rgb(49 87 232 / 35%); outline-offset: 3px; }
 
 .home-canvas { position: relative; height: calc(100vh - 70px); height: calc(100svh - 70px); overflow: hidden; background: #fff; }
 .dot-matrix {
@@ -104,7 +95,21 @@ body {
   .home-brand { gap: 8px; }
   .typing-message { min-height: 3em; font-size: clamp(18px, 5.5vw, 22px); }
 }
+@media (max-width: 520px) {
+  .chance-button {
+    width: clamp(100px, 29vw, 116px);
+    min-height: 36px;
+    flex: 0 0 auto;
+    justify-content: space-between;
+    gap: 3px;
+    padding: 3px 4px 3px 7px;
+    font-size: 10px;
+    line-height: 1.05;
+  }
+  .chance-button > span:first-child { max-width: 61px; text-align: center; text-wrap: balance; }
+  .chance-button-icon { width: 24px; height: 24px; flex-basis: 24px; }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-  .change-button, .change-button__arrow { transition: none; }
+  .chance-button, .chance-button-icon svg { transition: none; }
 }
