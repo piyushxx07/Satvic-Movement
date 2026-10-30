@@ -67,7 +67,7 @@ body {
   padding: 0 clamp(20px, 5vw, 72px);
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #f0f0f0;
+  justify-content: space-between;
   background: #fff;
 }
 .home-brand { display: inline-flex; align-items: center; gap: 11px; color: #202124; text-decoration: none; outline-offset: 5px; }
@@ -93,13 +93,54 @@ body {
   line-height: 1;
 }
 .variable-name-character.is-space { width: .27em; }
+.variable-name-character.is-bold { font-weight: 600; }
 .variable-name.is-auto-animating .variable-name-character { animation: name-letter-highlight .52s cubic-bezier(.2, .8, .2, 1) both; }
 @keyframes name-letter-highlight {
-  0%, 100% { color: #202124; transform: scale(1); }
-  45% { color: #58775d; font-weight: 800; transform: translateY(-2px) scale(1.16); }
+  0%, 100% { color: #111827; transform: scale(1); }
+  45% { color: #3157e8; font-variation-settings: "wght" 900, "opsz" 40; transform: translateY(-2px) scale(1.16); }
 }
 
-@media (max-width: 600px) { .home-nav { padding: 0 18px; } }
+.chance-button {
+  min-height: 44px;
+  padding: 4px 5px 4px 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #34383a;
+  border-radius: 999px;
+  background: #fff;
+  color: #171a1c;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.chance-button:hover { border-color: #3157e8; box-shadow: 0 3px 12px #3157e81c; }
+.chance-button-icon { width: 34px; height: 34px; display: grid; place-items: center; flex: 0 0 34px; overflow: hidden; border-radius: 50%; background: #3157e8; color: #fff; }
+.chance-button-icon svg { width: 20px; height: 20px; transition: transform .24s cubic-bezier(.2, .8, .2, 1); }
+.chance-button-icon path { stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.chance-button:hover .chance-button-icon svg, .chance-button:focus-visible .chance-button-icon svg { transform: translateX(3px); }
+
+.home-canvas { position: relative; height: calc(100vh - 70px); height: calc(100svh - 70px); overflow: hidden; background: #fff; }
+.dot-matrix {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background-image: radial-gradient(circle, #adb5ad 1px, transparent 1.4px);
+  background-size: 17px 17px;
+  -webkit-mask-image: radial-gradient(circle 230px at var(--pointer-x) var(--pointer-y), #000 0%, transparent 100%);
+  mask-image: radial-gradient(circle 230px at var(--pointer-x) var(--pointer-y), #000 0%, transparent 100%);
+  transition: opacity .18s ease;
+}
+.dot-matrix.is-visible { opacity: .52; }
+
+@media (max-width: 600px) {
+  .home-nav { padding: 0 18px; }
+  .chance-button { min-height: 40px; padding-left: 12px; gap: 8px; font-size: 12px; }
+  .chance-button-icon { width: 30px; height: 30px; flex-basis: 30px; }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }

@@ -1,12 +1,16 @@
 "use client";
 
-import { PointerEvent, useCallback, useEffect, useRef, useState } from "react";
+import { PointerEvent, CSSProperties, useCallback, useEffect, useRef, useState } from "react";
+import TargetCursor from "../../components/TargetCursor";
 
 const brandName = "Satvic Movement";
 const highlightDuration = (brandName.length - 1) * 45 + 520;
 
+type PointerPosition = { x: number; y: number };
+
 export default function StudioHome() {
-  const [pointer, setPointer] = useState<{ x: number; y: number } | null>(null);
+  const [pointer, setPointer] = useState<PointerPosition | null>(null);
+  const [dotPointer, setDotPointer] = useState<PointerPosition | null>(null);
   const [autoAnimating, setAutoAnimating] = useState(false);
   const characterRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const animationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -26,20 +30,49 @@ export default function StudioHome() {
     };
   }, [playNameAnimation]);
 
-  const onPointerMove = (event: PointerEvent<HTMLSpanElement>) => {
+  const onNamePointerMove = (event: PointerEvent<HTMLSpanElement>) => {
     if (event.pointerType === "touch") return;
     setPointer({ x: event.clientX, y: event.clientY });
   };
 
+  const onContentPointerMove = (event: PointerEvent<HTMLElement>) => {
+    if (event.pointerType === "touch") return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    setDotPointer({ x: event.clientX - rect.left, y: event.clientY - rect.top });
+  };
+
+  const dotStyle = dotPointer ? ({
+    "--pointer-x": `${dotPointer.x}px`,
+    "--pointer-y": `${dotPointer.y}px`,
+  } as CSSProperties) : undefined;
+
   return (
     <main className="home-page">
+      <TargetCursor
+        spinDuration={2}
+        hoverDuration={0.2}
+        size={36}
+        cornerSize={12}
+        thickness={3}
+        padding={6}
+        dotSize={4}
+        cursorColor="#ffffff"
+        cursorColorOnTarget="#ffffff"
+        blendMode="difference"
+        parallaxOn
+        matchRadius
+        showLabel
+        clickEffect
+        hideDefaultCursor
+        container={undefined}
+      />
       <header className="home-nav">
-        <a className="home-brand" href="/home" aria-label="Satvic Movement home">
+        <a className="home-brand cursor-target" data-cursor-label="Home" href="/home" aria-label="Satvic Movement home">
           <span className="home-logo" aria-hidden="true">S</span>
           <span
             className={`variable-name${autoAnimating ? " is-auto-animating" : ""}`}
             aria-label={brandName}
-            onPointerMove={onPointerMove}
+            onPointerMove={onNamePointerMove}
             onPointerLeave={() => setPointer(null)}
           >
             {Array.from(brandName).map((character, index) => {
@@ -48,19 +81,20 @@ export default function StudioHome() {
               const proximity = pointer && rect
                 ? Math.max(0, 1 - Math.hypot(pointer.x - (rect.left + rect.right) / 2, pointer.y - (rect.top + rect.bottom) / 2) / 100)
                 : 0;
-              const weight = 400 + proximity * 450;
               const isSpace = character === " ";
+              const isSatvic = index < "Satvic".length;
+              const weight = (isSatvic ? 600 : 400) + proximity * 400;
 
               return (
                 <span
                   key={`${character}-${index}`}
                   ref={element => { characterRefs.current[index] = element; }}
-                  className={`variable-name-character${isSpace ? " is-space" : ""}`}
+                  className={`variable-name-character${isSpace ? " is-space" : ""}${isSatvic ? " is-bold" : ""}`}
                   aria-hidden="true"
                   style={{
                     fontWeight: weight,
                     transform: `translateY(${-3 * proximity}px) scale(${1 + 0.24 * proximity})`,
-                    color: proximity > 0.08 ? "#58775d" : "#202124",
+                    color: proximity > 0.08 ? "#3157e8" : "#111827",
                     animationDelay: `${45 * index}ms`,
                   }}
                 >
@@ -70,7 +104,21 @@ export default function StudioHome() {
             })}
           </span>
         </a>
+        <button className="chance-button cursor-target" data-cursor-label="Open" type="button">
+          <span>Give me a Chance</span>
+          <span className="chance-button-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" /></svg>
+          </span>
+        </button>
       </header>
+      <section
+        className="home-canvas"
+        aria-label="Satvic Movement home"
+        onPointerMove={onContentPointerMove}
+        onPointerLeave={() => setDotPointer(null)}
+      >
+        <div className={`dot-matrix${dotPointer ? " is-visible" : ""}`} style={dotStyle} aria-hidden="true" />
+      </section>
     </main>
   );
 }
