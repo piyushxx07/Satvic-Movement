@@ -105,7 +105,7 @@ export default function StudioHome() {
           </span>
         </a>
         <a className="change-button cursor-target" data-cursor-label="Change" href="#">
-          <span>Change</span>
+          <span>Pitch Your Idea</span>
           <span className="change-button__arrow" aria-hidden="true">↗</span>
         </a>
       </header>

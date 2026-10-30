@@ -59,22 +59,31 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 14px 20px;
-  border: 1px solid rgb(255 255 255 / 72%);
-  border-radius: 14px;
-  background: linear-gradient(145deg, rgb(49 87 232 / 88%), rgb(34 64 196 / 74%));
-  color: #fff;
-  font: 600 15px/1.2 sans-serif;
+  gap: 10px;
+  height: 48px;
+  padding: 4px 5px 4px 17px;
+  border: 1px solid #111;
+  border-radius: 999px;
+  background: #fff;
+  color: #111;
+  font: 400 17px/1.2 "Gilroy", "Helvetica Neue", Arial, sans-serif;
   text-decoration: none;
-  box-shadow: inset 1px 1px 0 rgb(255 255 255 / 82%), inset -1px -1px 0 rgb(14 35 130 / 24%), 0 9px 24px rgb(49 87 232 / 30%);
-  transition: transform 220ms ease, box-shadow 220ms ease, background 220ms ease;
+  transition: border-color 220ms ease;
 }
-.change-button__arrow { display: inline-block; font-size: 18px; transition: transform 220ms ease; }
-.change-button:hover { transform: translateY(-3px); background: linear-gradient(145deg, #3157e8, #2445c8); box-shadow: inset 1px 1px 0 rgb(255 255 255 / 82%), 0 12px 26px rgb(49 87 232 / 35%); }
-.change-button:hover .change-button__arrow { transform: translate(3px, -3px); }
+.change-button__arrow {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  border-radius: 50%;
+  background: #3157e8;
+  color: #fff;
+  font: 400 21px/1 Arial, sans-serif;
+  transition: transform 220ms ease;
+}
+.change-button:hover .change-button__arrow { transform: rotate(45deg); }
 .change-button:focus-visible { outline: 3px solid rgb(49 87 232 / 35%); outline-offset: 3px; }
-.change-button:active { transform: translateY(-1px) scale(.98); }
 
 .home-canvas { position: relative; height: calc(100vh - 70px); height: calc(100svh - 70px); overflow: hidden; background: #fff; }
 .dot-matrix {
