@@ -3,42 +3,62 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-const INTRO_DURATION = 6000;
-const FADE_DURATION = 850;
+const messages = [
+  "Welcome to Satvic Movement",
+  "Every video, in every language",
+  "A little more understood, everywhere",
+];
 
 export default function Welcome() {
   const router = useRouter();
-  const [remaining, setRemaining] = useState(6);
-  const [leaving, setLeaving] = useState(false);
+  const [visibleText, setVisibleText] = useState("");
 
   useEffect(() => {
-    const startedAt = Date.now();
-    const ticker = window.setInterval(() => {
-      const elapsed = Date.now() - startedAt;
-      setRemaining(Math.max(0, Math.ceil((INTRO_DURATION - elapsed) / 1000)));
-    }, 150);
-    const fadeTimer = window.setTimeout(() => setLeaving(true), INTRO_DURATION);
-    const routeTimer = window.setTimeout(() => router.replace("/home"), INTRO_DURATION + FADE_DURATION);
+    let timer: ReturnType<typeof setTimeout>;
+    let phraseIndex = 0;
+    let position = 0;
 
-    return () => {
-      window.clearInterval(ticker);
-      window.clearTimeout(fadeTimer);
-      window.clearTimeout(routeTimer);
+    const typeNextCharacter = () => {
+      const phrase = messages[phraseIndex];
+      position += 1;
+      setVisibleText(phrase.slice(0, position));
+
+      if (position < phrase.length) {
+        timer = setTimeout(typeNextCharacter, 58);
+        return;
+      }
+
+      timer = setTimeout(() => {
+        if (phraseIndex === messages.length - 1) {
+          router.replace("/home");
+          return;
+        }
+
+        const eraseCharacter = () => {
+          position -= 1;
+          setVisibleText(phrase.slice(0, position));
+          if (position > 0) {
+            timer = setTimeout(eraseCharacter, 20);
+          } else {
+            phraseIndex += 1;
+            timer = setTimeout(typeNextCharacter, 250);
+          }
+        };
+
+        eraseCharacter();
+      }, 1100);
     };
+
+    timer = setTimeout(typeNextCharacter, 350);
+    return () => clearTimeout(timer);
   }, [router]);
 
   return (
-    <main className={`intro-splash${leaving ? " is-leaving" : ""}`}>
-      <div className="intro-emblem" aria-hidden="true">
-        <span className="intro-orbit intro-orbit-one" />
-        <span className="intro-orbit intro-orbit-two" />
-        <span className="intro-orbit intro-orbit-three" />
-        <span className="intro-logo">S</span>
-      </div>
-      <p className="intro-caption">SATVIC MOVEMENT</p>
-      <p className="intro-countdown" role="status" aria-live="off">
-        <span>Opening your space</span><b>{remaining}s</b>
-      </p>
+    <main className="typing-page">
+      <h1 className="typing-message" aria-label={messages.join(". ")}>
+        <span aria-hidden="true">{visibleText}</span>
+        <span className="typing-cursor" aria-hidden="true">|</span>
+      </h1>
     </main>
   );
 }
