@@ -177,7 +177,7 @@ body {
 
 @media (max-width: 600px) {
   .home-page {
-    --showcase-nav-heading-gap: 0px;
+    --showcase-nav-heading-gap: 40px;
     --showcase-heading-player-gap: 0px;
     --showcase-heading-size: clamp(45px, 12vw, 72px);
   }
@@ -196,7 +196,7 @@ body {
   .video-preview-2, .video-preview-3 { display: none; }
   .carousel-arrow-left { left: 8px; }
   .carousel-arrow-right { right: 8px; }
-  .phone-player { width: clamp(190px, 62vw, 235px); }
+  .phone-player { width: clamp(190px, 62vw, 235px); transform: translateY(-40px); }
   .phone-controls { right: 8%; bottom: 6.5%; left: 8%; padding: 10px 9px 8px; }
 }
 @media (hover: none) and (pointer: coarse) {
