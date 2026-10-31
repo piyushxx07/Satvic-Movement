@@ -1,8 +1,10 @@
 "use client";
 
-import { PointerEvent, useCallback, useEffect, useRef, useState } from "react";
+import { PointerEvent, useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
+import { createPortal } from "react-dom";
 import TargetCursor from "../../components/TargetCursor";
 import { Iphone } from "@/components/ui/iphone";
+import ProfileCard from "@/components/ui/profile-card";
 
 const brandName = "Satvic Movement";
 const highlightDuration = (brandName.length - 1) * 45 + 520;
@@ -117,12 +119,60 @@ export default function StudioHome() {
   const [isSwitching, setIsSwitching] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [contactOpen, setContactOpen] = useState(false);
+  const [contactClosing, setContactClosing] = useState(false);
+  const [contactOrigin, setContactOrigin] = useState({ x: 0, y: 0 });
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const contactButtonRef = useRef<HTMLButtonElement | null>(null);
+  const contactDialogRef = useRef<HTMLDivElement | null>(null);
+  const contactCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const playingRef = useRef(true);
   const pendingTimeRef = useRef<number | null>(null);
   const swipeStartRef = useRef<number | null>(null);
   const dotMatrixRef = useRef<HTMLDivElement | null>(null);
   const activeVideo = videoSequence[activeIndex];
+
+  const closeContact = () => {
+    const button = contactButtonRef.current?.getBoundingClientRect();
+    const dialog = contactDialogRef.current;
+    if (button && dialog) {
+      const card = dialog.getBoundingClientRect();
+      const dockX = button.left + button.width / 2 - (card.left + card.width / 2);
+      const dockY = button.top + button.height / 2 - (card.top + card.height / 2);
+      const currentTransform = getComputedStyle(dialog).transform;
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      dialog.animate(
+        [
+          { transform: currentTransform, opacity: 1 },
+          { transform: `translate(${dockX}px, ${dockY}px) scale(.12)`, opacity: 0 },
+        ],
+        { duration: reduceMotion ? 1 : 480, easing: "cubic-bezier(.55, 0, .8, .35)", fill: "forwards" },
+      );
+    }
+    setContactClosing(true);
+    if (contactCloseTimer.current) clearTimeout(contactCloseTimer.current);
+    contactCloseTimer.current = setTimeout(() => {
+      setContactOpen(false);
+      setContactClosing(false);
+    }, 500);
+  };
+
+  useEffect(() => {
+    if (!contactOpen) return;
+    document.querySelector<HTMLButtonElement>(".profile-dialog-close")?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeContact();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      contactButtonRef.current?.focus();
+    };
+  }, [contactOpen]);
+
+  useEffect(() => () => {
+    if (contactCloseTimer.current) clearTimeout(contactCloseTimer.current);
+  }, []);
 
   useEffect(() => {
     playingRef.current = isPlaying;
@@ -224,7 +274,7 @@ export default function StudioHome() {
 
   return (
     <main className="home-page">
-      <TargetCursor
+      {!contactOpen && <TargetCursor
         spinDuration={2}
         hoverDuration={0.2}
         size={36}
@@ -241,11 +291,16 @@ export default function StudioHome() {
         clickEffect
         hideDefaultCursor
         container={undefined}
-      />
+      />}
       <header className="home-nav">
         <SatvicBrand />
-        <button className="chance-button cursor-target" data-cursor-label="Open" type="button" aria-label="Give me a Chance">
-          <span>Give me a Chance</span>
+        <button ref={contactButtonRef} className={`chance-button cursor-target${contactOpen ? " is-contact-open" : ""}`} data-cursor-label="Contact me" type="button" aria-label="Contact me" aria-haspopup="dialog" aria-expanded={contactOpen} onClick={() => {
+          const rect = contactButtonRef.current?.getBoundingClientRect();
+          if (rect) setContactOrigin({ x: rect.left + rect.width / 2 - window.innerWidth / 2, y: rect.top + rect.height / 2 - window.innerHeight / 2 });
+          setContactClosing(false);
+          setContactOpen(true);
+        }}>
+          <span>Contact me</span>
           <span className="chance-button-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none">
               <path d="M5 12h14M13 5l7 7-7 7" />
@@ -337,6 +392,34 @@ export default function StudioHome() {
         </div>
         </div>
       </section>
+      {contactOpen && typeof document !== "undefined" && createPortal(
+        <div className={`profile-dialog-backdrop${contactClosing ? " is-closing" : ""}`} onMouseDown={event => { if (event.target === event.currentTarget) closeContact(); }}>
+          <div ref={contactDialogRef} className="profile-dialog" style={{ "--launch-x": `${contactOrigin.x}px`, "--launch-y": `${contactOrigin.y}px` } as CSSProperties & Record<`--${string}`, string | number>} role="dialog" aria-modal="true" aria-label="Contact profile">
+            <button className="profile-dialog-close" type="button" aria-label="Close profile" onClick={closeContact}>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+            </button>
+            <ProfileCard
+              name="Piyush Kumar"
+              title=""
+              handle=""
+              status=""
+              phoneNumber="8822550747"
+              emailAddress="piyushkumaryadav2027@gmail.com"
+              avatarUrl="/profile_pic.jpg"
+              holo={0.8}
+              glare={0.5}
+              tiltStrength={12}
+              parallax={8}
+              radius={16}
+              enableTilt
+              intro
+              showUserInfo
+              theme="dark"
+            />
+          </div>
+        </div>,
+        document.body,
+      )}
     </main>
   );
 }
