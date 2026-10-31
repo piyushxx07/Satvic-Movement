@@ -188,7 +188,7 @@ body {
   .dot-matrix { display: none; }
   .home-canvas { display: flex; height: auto; min-height: calc(100svh - 70px); overflow: visible; padding: 25px 0; }
   .demo-showcase { min-height: 735px; height: auto; flex: 0 0 auto; }
-  .video-carousel { min-height: 650px; }
+  .video-carousel { min-height: 650px; transform: translateY(-60px); }
   .video-preview-slot { width: 92px; height: 235px; }
   .video-preview { border-radius: 16px; }
   .video-preview-1.is-left { transform: translate(-148px,-50%) scale(.86); opacity: .34; }
@@ -196,7 +196,7 @@ body {
   .video-preview-2, .video-preview-3 { display: none; }
   .carousel-arrow-left { left: 8px; }
   .carousel-arrow-right { right: 8px; }
-  .phone-player { width: clamp(190px, 62vw, 235px); transform: translateY(-60px); }
+  .phone-player { width: clamp(190px, 62vw, 235px); }
   .phone-controls { right: 8%; bottom: 6.5%; left: 8%; padding: 10px 9px 8px; }
 }
 @media (hover: none) and (pointer: coarse) {
