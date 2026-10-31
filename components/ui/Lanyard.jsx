@@ -614,8 +614,9 @@ const stepSimulation = (sim, dt, physics, time) => {
   const steps = Math.max(1, Math.ceil(dt / MAX_STEP - 1e-6));
   const h = dt / steps;
   const { nodes, previous, velocities, body } = sim;
-  const windX = physics.breeze * (Math.sin(time * 0.53) * 0.7 + Math.sin(time * 1.31 + 1.7) * 0.3) * 3;
-  const windZ = physics.breeze * Math.sin(time * 0.37 + 0.6) * 2;
+  const swayCycle = (Math.PI * 2) / 10;
+  const windX = physics.breeze * Math.sin(time * swayCycle) * 3;
+  const windZ = physics.breeze * Math.sin(time * swayCycle + 0.8) * 1.5;
   const grab = sim.grab;
   const pin = scratch.pin;
   const nodeDrag = Math.exp(-physics.nodeDrag * h);

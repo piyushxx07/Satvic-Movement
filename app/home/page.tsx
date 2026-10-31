@@ -90,10 +90,10 @@ const projectJourney = [
 ];
 
 const satvicFitPoints = [
-  { title: "Build from zero", description: "I turn early ideas into working products, from websites and recommendation tools to AI-powered workflows." },
-  { title: "See the business behind the build", description: "Client conversations, requirements, campaign decisions, and delivery have taught me to start with the real problem." },
-  { title: "Bring people with me", description: "I have led a seven-person team, built hackathon teams, and learned to keep people moving together." },
-  { title: "Own the outcome", description: "I am comfortable switching between research, coordination, and hands-on execution to get useful work shipped." },
+  "I admire how Satvic is building a movement, not just a business, by helping people rethink their food and lifestyle choices.",
+  "I have personally used Satvic's Enema Kit, and it was a meaningful experience for me. I also noticed a positive change in my hair fall, which made my connection with Satvic more personal.",
+  "I believe food, nature, and everyday habits deserve more attention in a world that often looks for quick health solutions.",
+  "I want to use my skills in technology, business, and execution to contribute to a mission that creates a positive impact on people's lives.",
 ];
 
 function SatvicBrand() {
@@ -198,7 +198,6 @@ export default function StudioHome() {
   const pendingTimeRef = useRef<number | null>(null);
   const swipeStartRef = useRef<number | null>(null);
   const dotMatrixRef = useRef<HTMLDivElement | null>(null);
-  const hireDotMatrixRef = useRef<HTMLDivElement | null>(null);
   const activeVideo = videoSequence[activeIndex];
 
   const changeJourney = (index: number) => {
@@ -321,17 +320,6 @@ export default function StudioHome() {
   };
 
   const hideDotMatrix = () => dotMatrixRef.current?.classList.remove("is-visible");
-  const onHirePointerMove = (event: PointerEvent<HTMLElement>) => {
-    if (event.pointerType === "touch") return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    const dotMatrix = hireDotMatrixRef.current;
-    if (!dotMatrix) return;
-    dotMatrix.style.setProperty("--pointer-x", `${event.clientX - rect.left}px`);
-    dotMatrix.style.setProperty("--pointer-y", `${event.clientY - rect.top}px`);
-    dotMatrix.classList.add("is-visible");
-  };
-  const hideHireDotMatrix = () => hireDotMatrixRef.current?.classList.remove("is-visible");
-
   const switchLanguage = (language: "hindi" | "dub") => {
     if (language === audioLanguage) return;
     pendingTimeRef.current = videoRef.current?.currentTime ?? currentTime;
@@ -541,12 +529,22 @@ export default function StudioHome() {
           ))}
         </div>
       </section>
-      <section className="hire-section hire-id-section" aria-labelledby="hire-heading" onPointerMove={onHirePointerMove} onPointerLeave={hideHireDotMatrix}>
-        <div ref={hireDotMatrixRef} className="dot-matrix hire-dot-matrix" aria-hidden="true" />
+      <section className="hire-quote-section" aria-labelledby="hire-quote-heading">
+        <div className="hire-quote-content">
+          <h2 id="hire-quote-heading">Why you should hire me</h2>
+          <img className="hire-quote-avatar" src="/profile_pic.jpg" alt="" />
+          <p className="hire-quote-name">Piyush Kumar</p>
+          <blockquote className="hire-quote">
+            <p>I bring curiosity, care, and a hands-on approach to every project.</p>
+            <p>I turn thoughtful ideas into clear, useful experiences people enjoy.</p>
+          </blockquote>
+        </div>
+      </section>
+      <section className="hire-section hire-id-section" aria-labelledby="hire-heading">
         <div className="hire-id-heading">
-          <span className="hire-id-kicker">FOUNDER'S OFFICE · SATVIC MOVEMENT</span>
+          <span className="hire-id-kicker"><img src="/logo-icon.svg" alt="" /> FOUNDER'S OFFICE · SATVIC MOVEMENT</span>
           <h2 id="hire-heading" className="hire-heading">Why I want to build with Satvic</h2>
-          <p>A hands-on builder who is ready to take ownership, learn fast, and move meaningful work forward.</p>
+          <p>I want to bring my product, business, and team experience to work that makes practical wellness easier to reach.</p>
         </div>
         <div className="hire-id-layout">
           <div className="hire-lanyard" aria-label="Interactive Satvic Movement identity card. Drag to move it or click it to flip.">
@@ -554,34 +552,28 @@ export default function StudioHome() {
               frontImage="/id-card-front.svg"
               backImage="/id-card-back.svg"
               imageFit="cover"
-              cardColor="#f7f7f2"
+              cardColor="#2b4938"
               orientation="portrait"
               finish="glossy"
               cornerRadius={0.22}
               size={0.7}
               anchor="center"
               strapLength={0.48}
-              strapColor="#30392c"
+              strapColor="#3157e8"
               strapWidth={0.65}
               metal="silver"
               gravity={0.85}
               damping={0.62}
               elasticity={0.3}
-              breeze={0.16}
+              breeze={0.3}
               interactive
               intro
             />
             <span className="hire-lanyard-hint">DRAG TO MOVE · CLICK TO FLIP</span>
           </div>
           <div className="hire-points">
-            <span className="hire-points-kicker">WHAT I BRING</span>
-            <ol>
-              {satvicFitPoints.map((point, index) => (
-                <li key={point.title}>
-                  <span className="hire-point-number">0{index + 1}</span>
-                  <div><h3>{point.title}</h3><p>{point.description}</p></div>
-                </li>
-              ))}
+            <ol className="satvic-reasons">
+              {satvicFitPoints.map(point => <li key={point}>{point}</li>)}
             </ol>
           </div>
         </div>
