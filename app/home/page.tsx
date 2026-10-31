@@ -2,9 +2,15 @@
 
 import { PointerEvent, useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
+import dynamic from "next/dynamic";
 import TargetCursor from "../../components/TargetCursor";
 import { Iphone } from "@/components/ui/iphone";
 import ProfileCard from "@/components/ui/profile-card";
+
+const Lanyard = dynamic(() => import("@/components/ui/Lanyard"), {
+  ssr: false,
+  loading: () => <div className="lanyard-loading">Preparing your card…</div>,
+});
 
 const brandName = "Satvic Movement";
 const highlightDuration = (brandName.length - 1) * 45 + 520;
@@ -14,6 +20,14 @@ const formatTime = (seconds: number) => {
   const remainder = Math.floor(seconds % 60).toString().padStart(2, "0");
   return `${minutes}:${remainder}`;
 };
+
+function renderJourneyParagraph(text: string) {
+  return text.split(/(\*\*.*?\*\*)/g).map((part, index) =>
+    part.startsWith("**") && part.endsWith("**")
+      ? <strong key={index}>{part.slice(2, -2)}</strong>
+      : part,
+  );
+}
 
 type PointerPosition = { x: number; y: number };
 
@@ -35,40 +49,51 @@ type VideoItem = (typeof videoSequence)[number];
 const projectJourney = [
   {
     id: 1,
-    date: "2023 - 2024",
+    date: "2023 – 2024",
+    theme: "Where it started",
     cards: [
-      { title: "Building foundations", description: "Explored web development fundamentals and how thoughtful pages come together." },
-      { title: "Making first projects", description: "Turned early ideas into small, working projects." },
-      { title: "Learning by doing", description: "Practiced, refined, and grew more confident with each new attempt." },
+      { title: "A New Beginning", paragraphs: ["Coming from an **Army background**, moving into civilian college life was a new experience. I started my B.Tech at Vishwakarma University, Pune, and began exploring web development."] },
+      { title: "Building & Earning", paragraphs: ["I started building websites and turned my skills into freelance work. One of my first earnings went towards buying my own **scientific calculator**."] },
+      { title: "Mivyapar — My First Venture", paragraphs: ["In March 2024, I **co-founded Mivyapar**, a website development venture. I led a **team of 7**, handled clients and project execution, and generated approximately **₹50,000 in revenue**."] },
     ],
   },
   {
     id: 2,
-    date: "2024 - 2025",
+    date: "2024 – 2025",
+    theme: "Learning to lead",
     cards: [
-      { title: "Learning through projects", description: "Built practical experience by taking ideas from plan to finished page." },
-      { title: "Designing for people", description: "Created responsive layouts that feel clear and easy to use." },
-      { title: "Refining the details", description: "Improved each experience through iteration and careful polish." },
+      { title: "Learning the Hard Side of Leadership", paragraphs: ["Mivyapar continued until August 2024, when internal team conflicts forced us to stop. I tried resolving them, but learned that **leading people is as challenging as building a business**."] },
+      { title: "Leading My First Hackathon Team", paragraphs: ["I built and led my own hackathon team for the first time. When teammates felt exhausted, I kept them motivated, and we **secured 2 prizes**."] },
+      { title: "Exploring Beyond College", paragraphs: ["I continued **freelancing and volunteering** at events and hackathons, gaining experience in coordination, teamwork, and working with different people."] },
     ],
   },
   {
     id: 3,
-    date: "2025 - 2026",
+    date: "2025 – 2026",
+    theme: "From building to solving business problems",
     cards: [
-      { title: "Taking on new challenges", description: "Expanded my experience with a wider range of project work." },
-      { title: "Learning from feedback", description: "Used fresh perspectives to make each result stronger." },
-      { title: "Solving problems", description: "Kept building practical skills through hands-on work." },
+      { title: "Understanding Business", paragraphs: ["Joined a college counselling firm for an **8-month internship as a Business Developer**. Worked on requirement gathering, client handling, and understanding business needs."] },
+      { title: "Building AI-Powered Solutions", paragraphs: ["Developed a college recommendation application using Django and MongoDB, based on **5,000 student records**. Also built an **AI-powered brochure generator** that reduced document creation from hours to **under 10 minutes**."] },
+      { title: "Learning to Make Decisions", paragraphs: ["Managed Meta Ads campaigns with an approximately **$435 budget**, increasing engagement by **40%** and leads by **38%**. Presented campaign insights and recommendations to non-technical stakeholders."] },
     ],
   },
   {
     id: 4,
-    date: "2026 - 2027",
+    date: "2026 – 2027",
+    theme: "The next chapter",
     cards: [
-      { title: "Growing with purpose", description: "Continuing to learn and take on meaningful new challenges." },
-      { title: "Creating thoughtfully", description: "Building digital experiences with care and intention." },
-      { title: "Making it useful", description: "Focusing on work that feels clear, helpful, and enjoyable." },
+      { title: "Looking Beyond the Classroom", paragraphs: ["Currently in my final year of B.Tech Computer Engineering, looking for opportunities to work on **meaningful business problems** and take greater responsibility."] },
+      { title: "Ready for Bigger Challenges", paragraphs: ["I enjoy working at the intersection of **business, technology, communication, and execution**. I am comfortable learning new tools and figuring things out without waiting for detailed instructions."] },
+      { title: "The Next Chapter — Satvic", paragraphs: ["I understand this is a **full-time role**, and I am ready to commit. I am also open to starting as an intern to demonstrate my capabilities.", "I want to work closely with the founders, **take ownership of projects, and turn ideas into reality**. That's the kind of work I want to do."] },
     ],
   },
+];
+
+const satvicFitPoints = [
+  { title: "Build from zero", description: "I turn early ideas into working products, from websites and recommendation tools to AI-powered workflows." },
+  { title: "See the business behind the build", description: "Client conversations, requirements, campaign decisions, and delivery have taught me to start with the real problem." },
+  { title: "Bring people with me", description: "I have led a seven-person team, built hackathon teams, and learned to keep people moving together." },
+  { title: "Own the outcome", description: "I am comfortable switching between research, coordination, and hands-on execution to get useful work shipped." },
 ];
 
 function SatvicBrand() {
@@ -484,13 +509,26 @@ export default function StudioHome() {
             </button>
           ))}
         </div>
+        <div className="journey-chapter-heading">
+          <span className="journey-chapter-index">CHAPTER <b>{String(projectJourney[journeyIndex].id).padStart(2, "0")}</b></span>
+          <div>
+            <h3 className="journey-theme">{projectJourney[journeyIndex].theme}</h3>
+            <p>Three moments that shaped this year</p>
+          </div>
+        </div>
         <div className="journey-cards" key={projectJourney[journeyIndex].id}>
           {projectJourney[journeyIndex].cards.map((card, index) => (
             <div className="journey-card-wrap" key={card.title}>
               <article className="journey-card">
-                <span className="journey-card-number">0{index + 1}</span>
-                <h3>{card.title}</h3>
-                <p>{card.description}</p>
+                <div className="journey-card-rail" aria-hidden="true">
+                  <span className="journey-card-number">0{index + 1}</span>
+                  <span className="journey-card-rail-mark" />
+                  <span className="journey-card-rail-label">MILESTONE</span>
+                </div>
+                <div className="journey-card-copy">
+                  <h3>{card.title}</h3>
+                  {card.paragraphs.map(paragraph => <p key={paragraph}>{renderJourneyParagraph(paragraph)}</p>)}
+                </div>
               </article>
               {index < 2 && (
                 <svg className={`journey-sketch-arrow journey-sketch-arrow-${index + 1}`} viewBox="0 0 100 60" aria-hidden="true">
@@ -503,15 +541,50 @@ export default function StudioHome() {
           ))}
         </div>
       </section>
-      <section className="hire-section" aria-labelledby="hire-heading" onPointerMove={onHirePointerMove} onPointerLeave={hideHireDotMatrix}>
+      <section className="hire-section hire-id-section" aria-labelledby="hire-heading" onPointerMove={onHirePointerMove} onPointerLeave={hideHireDotMatrix}>
         <div ref={hireDotMatrixRef} className="dot-matrix hire-dot-matrix" aria-hidden="true" />
-        <h2 id="hire-heading" className="hire-heading">Why you should hire me</h2>
-        <img className="hire-portrait" src="/profile_pic.jpg" alt="Piyush Kumar" />
-        <h3 className="hire-name">Piyush Kumar</h3>
-        <p className="hire-copy">
-          I bring curiosity, care, and a hands-on approach to every project.<br className="hire-copy-break" />
-          I turn thoughtful ideas into clear, useful experiences people enjoy.
-        </p>
+        <div className="hire-id-heading">
+          <span className="hire-id-kicker">FOUNDER'S OFFICE · SATVIC MOVEMENT</span>
+          <h2 id="hire-heading" className="hire-heading">Why I want to build with Satvic</h2>
+          <p>A hands-on builder who is ready to take ownership, learn fast, and move meaningful work forward.</p>
+        </div>
+        <div className="hire-id-layout">
+          <div className="hire-lanyard" aria-label="Interactive Satvic Movement identity card. Drag to move it or click it to flip.">
+            <Lanyard
+              frontImage="/id-card-front.svg"
+              backImage="/id-card-back.svg"
+              imageFit="cover"
+              cardColor="#f7f7f2"
+              orientation="portrait"
+              finish="glossy"
+              cornerRadius={0.22}
+              size={0.7}
+              anchor="center"
+              strapLength={0.48}
+              strapColor="#30392c"
+              strapWidth={0.65}
+              metal="silver"
+              gravity={0.85}
+              damping={0.62}
+              elasticity={0.3}
+              breeze={0.16}
+              interactive
+              intro
+            />
+            <span className="hire-lanyard-hint">DRAG TO MOVE · CLICK TO FLIP</span>
+          </div>
+          <div className="hire-points">
+            <span className="hire-points-kicker">WHAT I BRING</span>
+            <ol>
+              {satvicFitPoints.map((point, index) => (
+                <li key={point.title}>
+                  <span className="hire-point-number">0{index + 1}</span>
+                  <div><h3>{point.title}</h3><p>{point.description}</p></div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
       </section>
       {contactOpen && typeof document !== "undefined" && createPortal(
         <div className={`profile-dialog-backdrop${contactClosing ? " is-closing" : ""}`} onMouseDown={event => { if (event.target === event.currentTarget) closeContact(); }}>

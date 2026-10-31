@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1440" viewBox="0 0 1024 1440">
+  <defs>
+    <linearGradient id="ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#252a25"/>
+      <stop offset="1" stop-color="#414b3d"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1440" rx="60" fill="url(#ink)"/>
+  <circle cx="118" cy="130" r="35" fill="#3157e8"/>
+  <path d="M104 146V111h9l20 24v-24h10v35h-9l-20-24v24z" fill="#fff"/>
+  <text x="175" y="120" fill="#f7f7f2" font-family="Arial,sans-serif" font-size="30" font-weight="700" letter-spacing="3">SATVIC MOVEMENT</text>
+  <text x="175" y="157" fill="#b9c0b2" font-family="Arial,sans-serif" font-size="18" letter-spacing="4">HOW I SHOW UP</text>
+  <path d="M90 245H934" stroke="#697364" stroke-width="2"/>
+  <text x="92" y="355" fill="#f7f7f2" font-family="Georgia,serif" font-size="62">Good work takes</text>
+  <text x="92" y="430" fill="#f7f7f2" font-family="Georgia,serif" font-size="62">more than an idea.</text>
+  <g font-family="Arial,sans-serif">
+    <circle cx="110" cy="590" r="8" fill="#91a582"/><text x="150" y="599" fill="#dfe5d8" font-size="27">Understand the real problem</text>
+    <circle cx="110" cy="720" r="8" fill="#91a582"/><text x="150" y="729" fill="#dfe5d8" font-size="27">Build with ownership</text>
+    <circle cx="110" cy="850" r="8" fill="#91a582"/><text x="150" y="859" fill="#dfe5d8" font-size="27">Communicate and align people</text>
+    <circle cx="110" cy="980" r="8" fill="#91a582"/><text x="150" y="989" fill="#dfe5d8" font-size="27">Keep moving toward the outcome</text>
+  </g>
+  <path d="M90 1130H934" stroke="#697364" stroke-width="2"/>
+  <text x="92" y="1210" fill="#b9c0b2" font-family="Arial,sans-serif" font-size="18" letter-spacing="4">PRESENTED BY</text>
+  <text x="92" y="1285" fill="#f7f7f2" font-family="Georgia,serif" font-size="42">Piyush Kumar</text>
+  <text x="930" y="1345" text-anchor="end" fill="#b9c0b2" font-family="Arial,sans-serif" font-size="16" letter-spacing="3">SM  ·  02</text>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1440" viewBox="0 0 1024 1440">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffefa"/>
+      <stop offset="1" stop-color="#eef0e8"/>
+    </linearGradient>
+    <clipPath id="portrait"><rect x="640" y="360" width="270" height="350" rx="34"/></clipPath>
+  </defs>
+  <rect width="1024" height="1440" rx="60" fill="url(#paper)"/>
+  <rect x="0" y="0" width="1024" height="22" fill="#3157e8"/>
+  <circle cx="118" cy="130" r="35" fill="#3157e8"/>
+  <path d="M104 146V111h9l20 24v-24h10v35h-9l-20-24v24z" fill="#fff"/>
+  <text x="175" y="120" fill="#202420" font-family="Arial,sans-serif" font-size="30" font-weight="700" letter-spacing="3">SATVIC MOVEMENT</text>
+  <text x="175" y="157" fill="#7b8177" font-family="Arial,sans-serif" font-size="18" letter-spacing="4">FOUNDER'S OFFICE · CANDIDATE</text>
+  <text x="900" y="245" text-anchor="end" fill="#899083" font-family="Arial,sans-serif" font-size="18" letter-spacing="3">PROFILE  /  2026</text>
+  <path d="M90 285H934" stroke="#d8dbd2" stroke-width="2"/>
+  <text x="92" y="440" fill="#252820" font-family="Georgia,serif" font-size="72">Piyush Kumar</text>
+  <text x="96" y="492" fill="#69745f" font-family="Arial,sans-serif" font-size="22" font-weight="700" letter-spacing="5">BUILDER · OPERATOR · PROBLEM SOLVER</text>
+  <rect x="640" y="550" width="270" height="350" rx="34" fill="#dfe4dc"/>
+  <image href="/profile_pic.jpg" x="640" y="550" width="270" height="350" preserveAspectRatio="xMidYMid slice" clip-path="url(#portrait)"/>
+  <text x="94" y="690" fill="#858b80" font-family="Arial,sans-serif" font-size="18" letter-spacing="4">A NOTE ON HOW I WORK</text>
+  <text x="94" y="760" fill="#252820" font-family="Georgia,serif" font-size="40">Curious by nature.</text>
+  <text x="94" y="814" fill="#252820" font-family="Georgia,serif" font-size="40">Hands-on by choice.</text>
+  <rect x="94" y="970" width="836" height="2" fill="#d8dbd2"/>
+  <text x="94" y="1040" fill="#858b80" font-family="Arial,sans-serif" font-size="18" letter-spacing="4">CURRENT CHAPTER</text>
+  <text x="94" y="1100" fill="#252820" font-family="Georgia,serif" font-size="36">Turning ideas into things that work.</text>
+  <circle cx="105" cy="1280" r="8" fill="#3157e8"/>
+  <text x="130" y="1287" fill="#69745f" font-family="Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="4">BUILD WITH PURPOSE</text>
+  <text x="930" y="1345" text-anchor="end" fill="#a1a69c" font-family="Arial,sans-serif" font-size="16" letter-spacing="3">SM  ·  01</text>
+</svg>
