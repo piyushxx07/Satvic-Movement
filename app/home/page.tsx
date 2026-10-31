@@ -250,7 +250,6 @@ export default function StudioHome() {
         hideDefaultCursor
         container={undefined}
       />
-      {isSwitching && <LoadingLines className="site-loading-overlay" />}
       <header className="home-nav">
         <SatvicBrand />
         <button className="chance-button cursor-target" data-cursor-label="Open" type="button" aria-label="Give me a Chance">
@@ -275,6 +274,7 @@ export default function StudioHome() {
         onPointerCancel={() => { swipeStartRef.current = null; }}
       >
         <div ref={dotMatrixRef} className="dot-matrix" aria-hidden="true" />
+        {isSwitching && <LoadingLines className="site-loading-overlay" />}
         <h2 className="demo-showcase-title">Some Demo Videos</h2>
         <div className="demo-showcase">
         <div className="video-carousel" aria-label="Language video carousel">
