@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const messages = [
-  "Welcome to Satvic Movement",
-  "Every video, in every language",
-  "A little more understood, everywhere",
+  "Welcome, Satvic Team",
+  "I'm Piyush, applying for Founder’s Office",
+  "A glimpse into what I've built and what I can bring",
 ];
 
 export default function Welcome() {
