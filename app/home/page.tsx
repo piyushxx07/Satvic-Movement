@@ -5,6 +5,16 @@ import { createPortal } from "react-dom";
 import TargetCursor from "../../components/TargetCursor";
 import { Iphone } from "@/components/ui/iphone";
 import ProfileCard from "@/components/ui/profile-card";
+import {
+  Timeline,
+  TimelineContent,
+  TimelineDate,
+  TimelineHeader,
+  TimelineIndicator,
+  TimelineItem,
+  TimelineSeparator,
+  TimelineTitle,
+} from "@/components/reui/timeline";
 
 const brandName = "Satvic Movement";
 const highlightDuration = (brandName.length - 1) * 45 + 520;
@@ -31,6 +41,33 @@ const videoSequence = [
 ];
 
 type VideoItem = (typeof videoSequence)[number];
+
+const projectJourney = [
+  {
+    id: 1,
+    date: "2023 - 2024",
+    title: "Building foundations",
+    description: "Explored web development fundamentals and started turning ideas into small, working projects.",
+  },
+  {
+    id: 2,
+    date: "2024 - 2025",
+    title: "Learning through projects",
+    description: "Built practical experience by designing, developing, and refining responsive web experiences.",
+  },
+  {
+    id: 3,
+    date: "2025 - 2026",
+    title: "Expanding my experience",
+    description: "Deepening my skills through new projects, feedback, and hands-on problem solving.",
+  },
+  {
+    id: 4,
+    date: "2026 - 2027",
+    title: "Growing with purpose",
+    description: "Continuing to learn, take on new challenges, and create thoughtful digital experiences.",
+  },
+];
 
 function SatvicBrand() {
   const [pointer, setPointer] = useState<PointerPosition | null>(null);
@@ -121,6 +158,7 @@ export default function StudioHome() {
   const [duration, setDuration] = useState(0);
   const [contactOpen, setContactOpen] = useState(false);
   const [contactClosing, setContactClosing] = useState(false);
+  const [journeyIndex, setJourneyIndex] = useState(0);
   const [contactOrigin, setContactOrigin] = useState({ x: 0, y: 0 });
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const contactButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -130,6 +168,7 @@ export default function StudioHome() {
   const pendingTimeRef = useRef<number | null>(null);
   const swipeStartRef = useRef<number | null>(null);
   const dotMatrixRef = useRef<HTMLDivElement | null>(null);
+  const hireDotMatrixRef = useRef<HTMLDivElement | null>(null);
   const activeVideo = videoSequence[activeIndex];
 
   const closeContact = () => {
@@ -240,6 +279,16 @@ export default function StudioHome() {
   };
 
   const hideDotMatrix = () => dotMatrixRef.current?.classList.remove("is-visible");
+  const onHirePointerMove = (event: PointerEvent<HTMLElement>) => {
+    if (event.pointerType === "touch") return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const dotMatrix = hireDotMatrixRef.current;
+    if (!dotMatrix) return;
+    dotMatrix.style.setProperty("--pointer-x", `${event.clientX - rect.left}px`);
+    dotMatrix.style.setProperty("--pointer-y", `${event.clientY - rect.top}px`);
+    dotMatrix.classList.add("is-visible");
+  };
+  const hideHireDotMatrix = () => hireDotMatrixRef.current?.classList.remove("is-visible");
 
   const switchLanguage = (language: "hindi" | "dub") => {
     if (language === audioLanguage) return;
@@ -392,7 +441,50 @@ export default function StudioHome() {
         </div>
         </div>
       </section>
-      <section className="hire-section" aria-labelledby="hire-heading">
+      <section className="journey-section" aria-labelledby="journey-heading">
+        <div className="journey-heading-group">
+          <span className="journey-eyebrow">Experience &amp; learning</span>
+          <h2 id="journey-heading" className="journey-heading">My Journey &amp; Growth</h2>
+          <p className="journey-intro">A little about what I have been learning and building along the way.</p>
+        </div>
+        <div className="journey-controls">
+          <button className="journey-year-button" type="button" aria-label={`Previous year: ${projectJourney[(journeyIndex - 1 + projectJourney.length) % projectJourney.length].date}`} onClick={() => setJourneyIndex(index => (index - 1 + projectJourney.length) % projectJourney.length)}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m7 7-7-7 7-7" /></svg>
+            Previous year
+          </button>
+          <button className="journey-year-button" type="button" aria-label={`Next year: ${projectJourney[(journeyIndex + 1) % projectJourney.length].date}`} onClick={() => setJourneyIndex(index => (index + 1) % projectJourney.length)}>
+            Next year
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7" /></svg>
+          </button>
+        </div>
+        <div className="journey-timeline-viewport">
+          <div className="journey-track-stops" aria-hidden="true">
+            {projectJourney.map((item, index) => (
+              <span
+                key={item.id}
+                className={`journey-track-stop${index === journeyIndex ? " is-current" : ""}`}
+                style={{ left: `${12 + index * (76 / (projectJourney.length - 1))}%` }}
+              />
+            ))}
+          </div>
+          <img className="journey-car" src="/timeline.png" alt="" aria-hidden="true" style={{ left: `calc(${12 + journeyIndex * (76 / (projectJourney.length - 1))}% - 38px)` }} />
+          <Timeline defaultValue={journeyIndex + 1} orientation="horizontal" className="journey-timeline" style={{ transform: `translateX(-${journeyIndex * 25}%)` }}>
+            {projectJourney.map(item => (
+              <TimelineItem key={item.id} step={item.id} className="journey-timeline-item">
+                <TimelineHeader>
+                  <TimelineSeparator />
+                  <TimelineDate>{item.date}</TimelineDate>
+                  <TimelineTitle>{item.title}</TimelineTitle>
+                  <TimelineIndicator />
+                </TimelineHeader>
+                <TimelineContent>{item.description}</TimelineContent>
+              </TimelineItem>
+            ))}
+          </Timeline>
+        </div>
+      </section>
+      <section className="hire-section" aria-labelledby="hire-heading" onPointerMove={onHirePointerMove} onPointerLeave={hideHireDotMatrix}>
+        <div ref={hireDotMatrixRef} className="dot-matrix hire-dot-matrix" aria-hidden="true" />
         <h2 id="hire-heading" className="hire-heading">Why you should hire me</h2>
         <img className="hire-portrait" src="/profile_pic.jpg" alt="Piyush Kumar" />
         <h3 className="hire-name">Piyush Kumar</h3>

@@ -94,11 +94,45 @@ body {
 .chance-button:focus-visible { outline: 3px solid rgb(49 87 232 / 35%); outline-offset: 3px; }
 
 .home-canvas { position: relative; display: flex; flex-direction: column; align-items: center; gap: var(--showcase-heading-player-gap); min-height: calc(100vh - 70px); min-height: calc(100svh - 70px); overflow: visible; background: #fff; }
-.hire-section { display: flex; flex-direction: column; align-items: center; padding: 22px 28px 104px; background: #fff; text-align: center; }
+.hire-section { position: relative; display: flex; flex-direction: column; align-items: center; overflow: hidden; padding: 22px 28px 104px; background: #fff; text-align: center; }
+.hire-section > :not(.hire-dot-matrix) { position: relative; z-index: 1; }
 .hire-heading { margin: 0 0 34px; color: #111; font-family: var(--font-instrument-serif), Georgia, serif; font-size: clamp(42px, 6vw, 72px); font-weight: 400; line-height: .98; letter-spacing: -.035em; }
 .hire-portrait { display: block; width: 142px; height: 142px; object-fit: cover; object-position: center 30%; border: 7px solid #fff; border-radius: 36px; background: #f1f1ef; box-shadow: 0 12px 38px rgb(0 0 0 / 11%); }
 .hire-name { margin: 26px 0 0; color: #111; font-size: clamp(21px, 2.3vw, 27px); font-weight: 500; letter-spacing: -.025em; }
 .hire-copy { max-width: 940px; margin: 25px 0 0; color: #242424; font-family: var(--font-instrument-serif), Georgia, serif; font-size: clamp(25px, 3.2vw, 39px); font-weight: 400; line-height: 1.32; letter-spacing: -.025em; }
+.journey-section { --journey-motion-duration: 1.8s; padding: 96px clamp(24px, 7vw, 100px) 104px; background: #f7f7f4; }
+.journey-heading-group { max-width: 680px; margin: 0 auto 46px; text-align: center; }
+.journey-eyebrow { color: #70806e; font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+.journey-heading { margin: 14px 0 0; color: #151715; font-family: var(--font-instrument-serif), Georgia, serif; font-size: clamp(42px, 6vw, 68px); font-weight: 400; line-height: 1; letter-spacing: -.035em; }
+.journey-intro { margin: 15px 0 0; color: #73766f; font-size: 15px; line-height: 1.65; }
+.journey-controls { display: flex; width: min(100%, 1120px); align-items: center; justify-content: space-between; gap: 10px; margin: 0 auto 25px; }
+.journey-year-button { position: relative; display: inline-flex; align-items: center; gap: 10px; overflow: hidden; padding: 11px 16px; border: 1px solid rgb(255 255 255 / 78%); border-radius: 999px; background: linear-gradient(135deg, rgb(255 255 255 / 76%), rgb(255 255 255 / 42%)); color: #273127; box-shadow: inset 0 1px 0 rgb(255 255 255 / 95%), inset 0 -1px 0 rgb(130 140 125 / 10%), 0 7px 22px rgb(31 43 31 / 8%); -webkit-backdrop-filter: blur(16px) saturate(1.6); backdrop-filter: blur(16px) saturate(1.6); font: 500 13px/1 "Gilroy", "Helvetica Neue", Arial, sans-serif; cursor: pointer; transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease, background .2s ease; }
+.journey-year-button::before { position: absolute; top: 0; left: 18%; width: 42%; height: 1px; background: linear-gradient(90deg, transparent, #fff, transparent); content: ""; }
+.journey-year-button:hover { border-color: #fff; background: linear-gradient(135deg, rgb(255 255 255 / 94%), rgb(255 255 255 / 58%)); box-shadow: inset 0 1px 0 #fff, 0 10px 26px rgb(31 43 31 / 12%); transform: translateY(-2px); }
+.journey-year-button:active { transform: translateY(0) scale(.98); }
+.journey-year-button:focus-visible { outline: 3px solid rgb(49 87 232 / 35%); outline-offset: 3px; }
+.journey-year-button svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.journey-timeline-viewport { position: relative; width: min(100%, 1120px); margin: 0 auto; overflow: hidden; }
+.journey-timeline-viewport::before { position: absolute; top: 41px; right: 0; left: 0; z-index: 0; height: 1px; background: #d9dcd5; content: ""; }
+.journey-track-stops { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.journey-track-stop { position: absolute; top: 34px; width: 15px; height: 15px; border: 3px solid #f7f7f4; border-radius: 50%; background: #9ba399; box-shadow: 0 0 0 1px #cdd1c9; transform: translateX(-50%); transition: background-color .3s ease, box-shadow .3s ease; }
+.journey-track-stop.is-current { background: #3157e8; box-shadow: 0 0 0 4px rgb(49 87 232 / 12%); }
+.reui-timeline.journey-timeline { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: 400%; margin: 0; transition: transform var(--journey-motion-duration) cubic-bezier(.35,.05,.25,1); }
+.journey-timeline-item { position: relative; min-width: 0; padding: 0 clamp(18px, 5vw, 60px); }
+.journey-timeline-item::before, .journey-timeline .reui-timeline-indicator, .journey-timeline .reui-timeline-separator { display: none; }
+.reui-timeline-header { position: relative; display: flex; min-height: 136px; flex-direction: column; align-items: center; }
+.reui-timeline-date { order: 0; color: #788075; font-size: 13px; font-weight: 600; letter-spacing: .04em; }
+.reui-timeline-indicator { position: absolute; top: 34px; left: 50%; z-index: 2; width: 15px; height: 15px; border: 3px solid #f7f7f4; border-radius: 50%; background: #9ba399; box-shadow: 0 0 0 1px #cdd1c9; transform: translateX(-50%); transition: background-color .35s ease, box-shadow .35s ease; }
+.journey-timeline-item[data-active="true"] .reui-timeline-indicator { background: #8b9c84; }
+.journey-timeline-item[data-current="true"] .reui-timeline-indicator { background: #3157e8; box-shadow: 0 0 0 4px rgb(49 87 232 / 12%); }
+.journey-timeline-item[data-current="true"] .reui-timeline-title,
+.journey-timeline-item[data-current="true"] .reui-timeline-content { animation: journey-current-in .45s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes journey-current-in { from { opacity: .25; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.reui-timeline-separator { position: absolute; top: 41px; left: 50%; width: 100%; height: 1px; background: #d9dcd5; }
+.journey-timeline-item:last-child .reui-timeline-separator { display: none; }
+.reui-timeline-title { order: 1; margin: 68px 0 0; color: #202420; font-size: 18px; font-weight: 600; line-height: 1.35; text-align: center; }
+.reui-timeline-content { max-width: 290px; margin: 8px auto 0; color: #747870; font-size: 14px; line-height: 1.7; text-align: center; }
+.journey-car { position: absolute; top: 24px; z-index: 3; display: block; width: 76px; height: 33px; object-fit: contain; pointer-events: none; filter: drop-shadow(0 2px 2px rgb(0 0 0 / 16%)); transition: left var(--journey-motion-duration) cubic-bezier(.35,.05,.25,1); will-change: left; }
 .demo-showcase { position: relative; z-index: 1; display: flex; flex: 0 0 auto; flex-direction: column; align-items: center; width: 100%; height: auto; min-height: 735px; }
 .video-carousel { position: relative; display: grid; flex: 1 1 0; place-items: center; width: 100%; min-height: 0; touch-action: pan-y; }
 .demo-showcase-title { position: relative; z-index: 1; flex: 0 0 auto; margin: var(--showcase-nav-heading-gap) 0 0; color: #111; font-family: var(--font-instrument-serif), Georgia, serif; font-size: var(--showcase-heading-size); font-weight: 400; line-height: .9; letter-spacing: -.035em; text-align: center; }
@@ -198,6 +232,14 @@ body {
   .hire-name { margin-top: 21px; }
   .hire-copy { margin-top: 19px; font-size: clamp(23px, 7vw, 30px); }
   .hire-copy-break { display: none; }
+  .journey-section { padding: 70px 24px 76px; }
+  .journey-heading-group { margin-bottom: 38px; }
+  .journey-intro { max-width: 34ch; margin-right: auto; margin-left: auto; }
+  .journey-controls { margin-bottom: 16px; }
+  .journey-timeline-item { padding: 0 6px; }
+  .reui-timeline-header { min-height: 136px; }
+  .reui-timeline-title { margin-top: 68px; font-size: 17px; }
+  .reui-timeline-content { max-width: 34ch; margin: 8px auto 0; font-size: 13px; text-align: center; }
   .demo-showcase { min-height: 735px; height: auto; flex: 0 0 auto; }
   .video-carousel { min-height: 650px; transform: translateY(-60px); }
   .video-preview-slot { width: 92px; height: 235px; }

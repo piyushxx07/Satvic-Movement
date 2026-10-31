@@ -12,6 +12,11 @@ const instrumentSerif = Instrument_Serif({
 export const metadata: Metadata = {
   title: "Satvic Language Studio",
   description: "A thoughtful workspace for bringing Satvic videos to more languages.",
+  icons: {
+    icon: [{ url: "/satvic.webp", type: "image/webp" }],
+    shortcut: "/satvic.webp",
+    apple: "/satvic.webp",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
