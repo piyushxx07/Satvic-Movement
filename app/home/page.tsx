@@ -392,6 +392,15 @@ export default function StudioHome() {
         </div>
         </div>
       </section>
+      <section className="hire-section" aria-labelledby="hire-heading">
+        <h2 id="hire-heading" className="hire-heading">Why you should hire me</h2>
+        <img className="hire-portrait" src="/profile_pic.jpg" alt="Piyush Kumar" />
+        <h3 className="hire-name">Piyush Kumar</h3>
+        <p className="hire-copy">
+          I bring curiosity, care, and a hands-on approach to every project.<br className="hire-copy-break" />
+          I turn thoughtful ideas into clear, useful experiences people enjoy.
+        </p>
+      </section>
       {contactOpen && typeof document !== "undefined" && createPortal(
         <div className={`profile-dialog-backdrop${contactClosing ? " is-closing" : ""}`} onMouseDown={event => { if (event.target === event.currentTarget) closeContact(); }}>
           <div ref={contactDialogRef} className="profile-dialog" style={{ "--launch-x": `${contactOrigin.x}px`, "--launch-y": `${contactOrigin.y}px` } as CSSProperties & Record<`--${string}`, string | number>} role="dialog" aria-modal="true" aria-label="Contact profile">

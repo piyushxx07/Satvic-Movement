@@ -94,6 +94,11 @@ body {
 .chance-button:focus-visible { outline: 3px solid rgb(49 87 232 / 35%); outline-offset: 3px; }
 
 .home-canvas { position: relative; display: flex; flex-direction: column; align-items: center; gap: var(--showcase-heading-player-gap); min-height: calc(100vh - 70px); min-height: calc(100svh - 70px); overflow: visible; background: #fff; }
+.hire-section { display: flex; flex-direction: column; align-items: center; padding: 22px 28px 104px; background: #fff; text-align: center; }
+.hire-heading { margin: 0 0 34px; color: #111; font-family: var(--font-instrument-serif), Georgia, serif; font-size: clamp(42px, 6vw, 72px); font-weight: 400; line-height: .98; letter-spacing: -.035em; }
+.hire-portrait { display: block; width: 142px; height: 142px; object-fit: cover; object-position: center 30%; border: 7px solid #fff; border-radius: 36px; background: #f1f1ef; box-shadow: 0 12px 38px rgb(0 0 0 / 11%); }
+.hire-name { margin: 26px 0 0; color: #111; font-size: clamp(21px, 2.3vw, 27px); font-weight: 500; letter-spacing: -.025em; }
+.hire-copy { max-width: 940px; margin: 25px 0 0; color: #242424; font-family: var(--font-instrument-serif), Georgia, serif; font-size: clamp(25px, 3.2vw, 39px); font-weight: 400; line-height: 1.32; letter-spacing: -.025em; }
 .demo-showcase { position: relative; z-index: 1; display: flex; flex: 0 0 auto; flex-direction: column; align-items: center; width: 100%; height: auto; min-height: 735px; }
 .video-carousel { position: relative; display: grid; flex: 1 1 0; place-items: center; width: 100%; min-height: 0; touch-action: pan-y; }
 .demo-showcase-title { position: relative; z-index: 1; flex: 0 0 auto; margin: var(--showcase-nav-heading-gap) 0 0; color: #111; font-family: var(--font-instrument-serif), Georgia, serif; font-size: var(--showcase-heading-size); font-weight: 400; line-height: .9; letter-spacing: -.035em; text-align: center; }
@@ -187,6 +192,12 @@ body {
   .typing-message { min-height: 3em; font-size: clamp(18px, 5.5vw, 22px); }
   .dot-matrix { display: none; }
   .home-canvas { display: flex; height: auto; min-height: calc(100svh - 70px); overflow: visible; padding: 25px 0; }
+  .hire-section { padding: 30px 22px 76px; }
+  .hire-heading { max-width: 12ch; margin-bottom: 25px; }
+  .hire-portrait { width: 124px; height: 124px; border-radius: 30px; }
+  .hire-name { margin-top: 21px; }
+  .hire-copy { margin-top: 19px; font-size: clamp(23px, 7vw, 30px); }
+  .hire-copy-break { display: none; }
   .demo-showcase { min-height: 735px; height: auto; flex: 0 0 auto; }
   .video-carousel { min-height: 650px; transform: translateY(-60px); }
   .video-preview-slot { width: 92px; height: 235px; }
