@@ -130,6 +130,15 @@ body {
 .dot-matrix.is-visible { opacity: .52; }
 .phone-player { position: relative; z-index: 3; width: clamp(230px, 25vw, 285px); justify-self: center; filter: drop-shadow(0 20px 34px rgb(31 43 31 / 10%)); }
 .iphone-mockup { display: block; width: 100%; }
+.loading-lines { position: relative; display: grid; width: 180px; height: 70px; place-items: center; overflow: hidden; color: #fff; font-family: "Poppins", "Helvetica Neue", Arial, sans-serif; font-size: 20px; font-weight: 600; user-select: none; }
+.loading-lines-letters { position: relative; z-index: 2; display: flex; }
+.loading-lines-letters span { opacity: 0; animation: loading-letter 1.9s linear infinite; animation-delay: calc(0.1s + var(--letter-index) * 0.105s); }
+.loading-lines-glow { position: absolute; inset: 0; z-index: 1; background: radial-gradient(circle at 50% 50%, #ff0 0%, transparent 50%), radial-gradient(circle at 45% 45%, #f00 0%, transparent 45%), radial-gradient(circle at 55% 55%, #0ff 0%, transparent 45%), radial-gradient(circle at 45% 55%, #0f0 0%, transparent 45%), radial-gradient(circle at 55% 45%, #00f 0%, transparent 45%); -webkit-mask: repeating-linear-gradient(90deg, transparent 0 6px, #000 7px 8px); mask: repeating-linear-gradient(90deg, transparent 0 6px, #000 7px 8px); animation: loading-glow-move 1.2s infinite alternate cubic-bezier(.6,.8,.5,1), loading-glow-opacity 2.3s infinite; }
+.site-loading-overlay { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; background: rgb(255 255 255 / 84%); backdrop-filter: blur(8px); pointer-events: all; }
+.site-loading-overlay .loading-lines { width: 220px; height: 90px; color: #202124; font-size: 25px; }
+@keyframes loading-glow-move { from { transform: translateX(-35%); } to { transform: translateX(35%); } }
+@keyframes loading-glow-opacity { 0%, 100% { opacity: 0; } 15% { opacity: 1; } 65% { opacity: 0; } }
+@keyframes loading-letter { 0%, 100% { opacity: 0; } 5% { opacity: 1; text-shadow: 0 0 4px #fff; transform: scale(1.1) translateY(-2px); } 20% { opacity: .2; } }
 .phone-player .iphone-mockup video { transition: opacity .28s ease, filter .28s ease, transform .28s ease; }
 .phone-player.is-switching .iphone-mockup video { opacity: .22; filter: blur(5px); transform: scale(1.025); }
 .phone-controls {

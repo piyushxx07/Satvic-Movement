@@ -3,6 +3,7 @@
 import { PointerEvent, useCallback, useEffect, useRef, useState } from "react";
 import TargetCursor from "../../components/TargetCursor";
 import { Iphone } from "@/components/ui/iphone";
+import LoadingLines from "@/components/ui/loading-lines";
 
 const brandName = "Satvic Movement";
 const highlightDuration = (brandName.length - 1) * 45 + 520;
@@ -169,13 +170,19 @@ export default function StudioHome() {
       if (playingRef.current) void video.play().catch(() => setIsPlaying(false));
       revealTimer = setTimeout(() => setIsSwitching(false), 180);
     };
+    const onError = () => {
+      readyHandled = true;
+      setIsSwitching(false);
+    };
 
     video.addEventListener("loadeddata", onReady, { once: true });
+    video.addEventListener("error", onError, { once: true });
     if (video.readyState >= 2) onReady();
     else video.load();
 
     return () => {
       video.removeEventListener("loadeddata", onReady);
+      video.removeEventListener("error", onError);
       if (revealTimer) clearTimeout(revealTimer);
     };
   }, [audioLanguage, activeIndex]);
@@ -243,6 +250,7 @@ export default function StudioHome() {
         hideDefaultCursor
         container={undefined}
       />
+      {isSwitching && <LoadingLines className="site-loading-overlay" />}
       <header className="home-nav">
         <SatvicBrand />
         <button className="chance-button cursor-target" data-cursor-label="Open" type="button" aria-label="Give me a Chance">
