@@ -21,7 +21,7 @@ body {
 
 .home-page {
   /* Adjust these values to tune the nav, heading, and player spacing. */
-  --showcase-nav-heading-gap: 80px;
+  --showcase-nav-heading-gap: 100px;
   --showcase-heading-player-gap: 0px;
   --showcase-heading-size: 85px;
   min-height: 100vh;
