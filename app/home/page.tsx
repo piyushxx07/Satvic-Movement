@@ -5,16 +5,6 @@ import { createPortal } from "react-dom";
 import TargetCursor from "../../components/TargetCursor";
 import { Iphone } from "@/components/ui/iphone";
 import ProfileCard from "@/components/ui/profile-card";
-import {
-  Timeline,
-  TimelineContent,
-  TimelineDate,
-  TimelineHeader,
-  TimelineIndicator,
-  TimelineItem,
-  TimelineSeparator,
-  TimelineTitle,
-} from "@/components/reui/timeline";
 
 const brandName = "Satvic Movement";
 const highlightDuration = (brandName.length - 1) * 45 + 520;
@@ -46,26 +36,38 @@ const projectJourney = [
   {
     id: 1,
     date: "2023 - 2024",
-    title: "Building foundations",
-    description: "Explored web development fundamentals and started turning ideas into small, working projects.",
+    cards: [
+      { title: "Building foundations", description: "Explored web development fundamentals and how thoughtful pages come together." },
+      { title: "Making first projects", description: "Turned early ideas into small, working projects." },
+      { title: "Learning by doing", description: "Practiced, refined, and grew more confident with each new attempt." },
+    ],
   },
   {
     id: 2,
     date: "2024 - 2025",
-    title: "Learning through projects",
-    description: "Built practical experience by designing, developing, and refining responsive web experiences.",
+    cards: [
+      { title: "Learning through projects", description: "Built practical experience by taking ideas from plan to finished page." },
+      { title: "Designing for people", description: "Created responsive layouts that feel clear and easy to use." },
+      { title: "Refining the details", description: "Improved each experience through iteration and careful polish." },
+    ],
   },
   {
     id: 3,
     date: "2025 - 2026",
-    title: "Expanding my experience",
-    description: "Deepening my skills through new projects, feedback, and hands-on problem solving.",
+    cards: [
+      { title: "Taking on new challenges", description: "Expanded my experience with a wider range of project work." },
+      { title: "Learning from feedback", description: "Used fresh perspectives to make each result stronger." },
+      { title: "Solving problems", description: "Kept building practical skills through hands-on work." },
+    ],
   },
   {
     id: 4,
     date: "2026 - 2027",
-    title: "Growing with purpose",
-    description: "Continuing to learn, take on new challenges, and create thoughtful digital experiences.",
+    cards: [
+      { title: "Growing with purpose", description: "Continuing to learn and take on meaningful new challenges." },
+      { title: "Creating thoughtfully", description: "Building digital experiences with care and intention." },
+      { title: "Making it useful", description: "Focusing on work that feels clear, helpful, and enjoyable." },
+    ],
   },
 ];
 
@@ -92,7 +94,7 @@ function SatvicBrand() {
 
   return (
     <a className="home-brand cursor-target" data-cursor-label="Home" href="/home" aria-label="Satvic Movement home">
-      <span className="home-logo" aria-hidden="true">S</span>
+      <img className="home-logo" src="/logo.jpg" alt="" aria-hidden="true" />
       <span
         className={`variable-name${autoAnimating ? " is-auto-animating" : ""}`}
         aria-label={brandName}
@@ -159,17 +161,32 @@ export default function StudioHome() {
   const [contactOpen, setContactOpen] = useState(false);
   const [contactClosing, setContactClosing] = useState(false);
   const [journeyIndex, setJourneyIndex] = useState(0);
+  const [journeyFromIndex, setJourneyFromIndex] = useState(0);
+  const [journeyMoving, setJourneyMoving] = useState(false);
   const [contactOrigin, setContactOrigin] = useState({ x: 0, y: 0 });
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const contactButtonRef = useRef<HTMLButtonElement | null>(null);
   const contactDialogRef = useRef<HTMLDivElement | null>(null);
   const contactCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const journeyMotionTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const playingRef = useRef(true);
   const pendingTimeRef = useRef<number | null>(null);
   const swipeStartRef = useRef<number | null>(null);
   const dotMatrixRef = useRef<HTMLDivElement | null>(null);
   const hireDotMatrixRef = useRef<HTMLDivElement | null>(null);
   const activeVideo = videoSequence[activeIndex];
+
+  const changeJourney = (index: number) => {
+    if (journeyMotionTimer.current) clearTimeout(journeyMotionTimer.current);
+    setJourneyFromIndex(journeyIndex);
+    setJourneyIndex(index);
+    setJourneyMoving(true);
+    journeyMotionTimer.current = setTimeout(() => setJourneyMoving(false), 720);
+  };
+
+  useEffect(() => () => {
+    if (journeyMotionTimer.current) clearTimeout(journeyMotionTimer.current);
+  }, []);
 
   const closeContact = () => {
     const button = contactButtonRef.current?.getBoundingClientRect();
@@ -443,44 +460,47 @@ export default function StudioHome() {
       </section>
       <section className="journey-section" aria-labelledby="journey-heading">
         <div className="journey-heading-group">
-          <span className="journey-eyebrow">Experience &amp; learning</span>
           <h2 id="journey-heading" className="journey-heading">My Journey &amp; Growth</h2>
           <p className="journey-intro">A little about what I have been learning and building along the way.</p>
         </div>
         <div className="journey-controls">
-          <button className="journey-year-button" type="button" aria-label={`Previous year: ${projectJourney[(journeyIndex - 1 + projectJourney.length) % projectJourney.length].date}`} onClick={() => setJourneyIndex(index => (index - 1 + projectJourney.length) % projectJourney.length)}>
+          <button className="journey-year-button" type="button" aria-label="Previous year" disabled={journeyIndex === 0} onClick={() => changeJourney(Math.max(0, journeyIndex - 1))}>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m7 7-7-7 7-7" /></svg>
             Previous year
           </button>
-          <button className="journey-year-button" type="button" aria-label={`Next year: ${projectJourney[(journeyIndex + 1) % projectJourney.length].date}`} onClick={() => setJourneyIndex(index => (index + 1) % projectJourney.length)}>
+          <button className="journey-year-button" type="button" aria-label="Next year" disabled={journeyIndex === projectJourney.length - 1} onClick={() => changeJourney(Math.min(projectJourney.length - 1, journeyIndex + 1))}>
             Next year
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7" /></svg>
           </button>
         </div>
-        <div className="journey-timeline-viewport">
-          <div className="journey-track-stops" aria-hidden="true">
-            {projectJourney.map((item, index) => (
-              <span
-                key={item.id}
-                className={`journey-track-stop${index === journeyIndex ? " is-current" : ""}`}
-                style={{ left: `${12 + index * (76 / (projectJourney.length - 1))}%` }}
-              />
-            ))}
-          </div>
-          <img className="journey-car" src="/timeline.png" alt="" aria-hidden="true" style={{ left: `calc(${12 + journeyIndex * (76 / (projectJourney.length - 1))}% - 38px)` }} />
-          <Timeline defaultValue={journeyIndex + 1} orientation="horizontal" className="journey-timeline" style={{ transform: `translateX(-${journeyIndex * 25}%)` }}>
-            {projectJourney.map(item => (
-              <TimelineItem key={item.id} step={item.id} className="journey-timeline-item">
-                <TimelineHeader>
-                  <TimelineSeparator />
-                  <TimelineDate>{item.date}</TimelineDate>
-                  <TimelineTitle>{item.title}</TimelineTitle>
-                  <TimelineIndicator />
-                </TimelineHeader>
-                <TimelineContent>{item.description}</TimelineContent>
-              </TimelineItem>
-            ))}
-          </Timeline>
+        <p className="journey-current-year" aria-live="polite">{projectJourney[journeyIndex].date}</p>
+        <div className={`journey-years${journeyMoving ? " is-moving" : ""}`} role="group" aria-label="Choose a year">
+          <span className="journey-years-progress" aria-hidden="true" style={{ left: `calc(12.5% + ${Math.min(journeyFromIndex, journeyIndex) * 25}%)`, width: `calc(${Math.abs(journeyFromIndex - journeyIndex) * 25}%)` }} />
+          <img className="journey-car" src="/timeline.png" alt="" aria-hidden="true" style={{ left: `calc(12.5% + ${journeyIndex * 25}%)` }} />
+          {projectJourney.map((item, index) => (
+            <button key={item.id} type="button" className={`journey-year${index <= journeyIndex ? " is-complete" : ""}${index === journeyIndex ? " is-current" : ""}`} aria-pressed={index === journeyIndex} onClick={() => changeJourney(index)}>
+              <span className="journey-year-dot" aria-hidden="true" />
+              <span>{item.date}</span>
+            </button>
+          ))}
+        </div>
+        <div className="journey-cards" key={projectJourney[journeyIndex].id}>
+          {projectJourney[journeyIndex].cards.map((card, index) => (
+            <div className="journey-card-wrap" key={card.title}>
+              <article className="journey-card">
+                <span className="journey-card-number">0{index + 1}</span>
+                <h3>{card.title}</h3>
+                <p>{card.description}</p>
+              </article>
+              {index < 2 && (
+                <svg className={`journey-sketch-arrow journey-sketch-arrow-${index + 1}`} viewBox="0 0 100 60" aria-hidden="true">
+                  <path className="journey-pencil-echo" d="M5 43 C18 37 21 16 33 17 C45 18 47 46 60 43 C72 40 77 27 90 26" />
+                  <path d="M5 41 C19 36 22 15 34 16 C46 17 48 44 61 41 C73 38 78 25 91 24" />
+                  <path className="journey-arrow-head" d="m80 16 11 8-10 8" />
+                </svg>
+              )}
+            </div>
+          ))}
         </div>
       </section>
       <section className="hire-section" aria-labelledby="hire-heading" onPointerMove={onHirePointerMove} onPointerLeave={hideHireDotMatrix}>
