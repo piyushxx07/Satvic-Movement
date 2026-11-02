@@ -602,17 +602,33 @@ export default function StudioHome() {
             </ul>
           </div>
           <div className="hire-tool-groups">
-            <div className="hire-tool-group" aria-label="AI tools I use">
-              <p>AI TOOLS</p>
-              <div><img src="https://cdn.simpleicons.org/anthropic" alt="" /><span>Claude</span></div>
-              <div><img src="https://cdn.simpleicons.org/openai" alt="" /><span>GPT</span></div>
-              <div><img src="https://cdn.simpleicons.org/googlegemini" alt="" /><span>Gemini</span></div>
+            <div className="hire-tool-group" aria-label="AI and automation tools">
+              <p>AI &amp; AUTOMATION</p>
+              <div><img src="https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/claude.svg" alt="" /><span>Claude</span></div>
+              <div><img src="https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/openai.svg" alt="" /><span>ChatGPT</span></div>
+              <div><img src="https://cdn.simpleicons.org/elevenlabs" alt="" /><span>ElevenLabs</span></div>
+              <div><img src="https://cdn.simpleicons.org/make" alt="" /><span>Make.com</span></div>
+              <div><img src="https://cdn.simpleicons.org/perplexity" alt="" /><span>Perplexity</span></div>
             </div>
-            <div className="hire-tool-group" aria-label="Development and marketing tools I use">
-              <p>DEVELOPMENT &amp; MARKETING</p>
-              <div><img src="https://cdn.simpleicons.org/django" alt="" /><span>Django</span></div>
-              <div><img src="https://cdn.simpleicons.org/mongodb" alt="" /><span>MongoDB</span></div>
-              <div><img src="https://cdn.simpleicons.org/meta" alt="" /><span>Meta Ads</span></div>
+            <div className="hire-tool-group" aria-label="Project and operations tools">
+              <p>PROJECT &amp; OPS</p>
+              <div><img src="https://cdn.simpleicons.org/notion" alt="" /><span>Notion</span></div>
+              <div><img src="https://cdn.simpleicons.org/airtable" alt="" /><span>Airtable</span></div>
+              <div><img src="https://cdn.simpleicons.org/trello" alt="" /><span>Trello</span></div>
+              <div><img src="https://cdn.simpleicons.org/asana" alt="" /><span>Asana</span></div>
+            </div>
+            <div className="hire-tool-group" aria-label="Design and media tools">
+              <p>DESIGN &amp; MEDIA</p>
+              <div><img src="https://cdn.simpleicons.org/figma" alt="" /><span>Figma</span></div>
+              <div><img src="https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/canva.svg" alt="" /><span>Canva</span></div>
+              <div><img src="https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/descript.svg" alt="" /><span>Descript</span></div>
+              <div><img src="https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/adobepremierepro.svg" alt="" /><span>Premiere Pro</span></div>
+            </div>
+            <div className="hire-tool-group" aria-label="Data and finance tools">
+              <p>DATA &amp; FINANCE</p>
+              <div><img src="https://cdn.simpleicons.org/googlesheets" alt="" /><span>Google Sheets</span></div>
+              <div><img src="https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/microsoftexcel.svg" alt="" /><span>Excel</span></div>
+              <div><img src="https://cdn.simpleicons.org/metabase" alt="" /><span>Metabase</span></div>
             </div>
           </div>
         </div>
