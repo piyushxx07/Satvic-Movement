@@ -13,6 +13,10 @@ type ProfileCardProps = {
   status?: string;
   statusColor?: string;
   contactText?: string;
+  actionHref?: string;
+  actionLabel?: string;
+  documentIcon?: boolean;
+  documentPreviewUrl?: string;
   phoneNumber?: string;
   emailAddress?: string;
   showUserInfo?: boolean;
@@ -42,6 +46,10 @@ function ProfileCard({
   status = "",
   statusColor = "#22c55e",
   contactText = "Contact me",
+  actionHref,
+  actionLabel = "Download",
+  documentIcon = false,
+  documentPreviewUrl,
   phoneNumber,
   emailAddress,
   showUserInfo = true,
@@ -126,6 +134,8 @@ function ProfileCard({
           <span className="profile-card__sheen" />
           <span className="profile-card__holo"><span className="profile-card__holo-glow" /><span className="profile-card__holo-shift" /></span>
           {avatarUrl && <img className="profile-card__photo" src={avatarUrl} alt={name} draggable={false} />}
+          {documentIcon && <span className="profile-card__document-icon" aria-hidden="true"><svg viewBox="0 0 64 80" fill="none"><path d="M12 4h26l14 14v56H12zM38 4v16h14M21 35h22M21 45h22M21 55h15" /><path className="profile-card__document-pdf" d="M20 65h24" /></svg><span>PDF</span></span>}
+          {documentPreviewUrl && <iframe className="profile-card__document-preview" src={`${documentPreviewUrl}#toolbar=0&navpanes=0&scrollbar=0`} title="Resume preview" />}
           {(name || title) && <>
             <span className="profile-card__scrim" />
             <div className="profile-card__info">
@@ -151,7 +161,8 @@ function ProfileCard({
               Email
             </a>}
           </div>}
-          {!(phoneNumber || emailAddress) && contactText && <button type="button" className="profile-card__contact" onClick={onContactClick}>
+          {actionHref && <div className="profile-card__actions"><a className="profile-card__contact" href={actionHref} download aria-label={actionLabel}>{actionLabel}</a></div>}
+          {!(phoneNumber || emailAddress || actionHref) && contactText && <button type="button" className="profile-card__contact" onClick={onContactClick}>
             {contactText}
           </button>}
         </div>}

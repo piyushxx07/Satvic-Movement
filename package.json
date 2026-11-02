@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@paper-design/shaders-react": "^0.0.82",
     "@types/three": "^0.187.0",
     "next": "^15.2.0",
     "react": "^19.0.0",

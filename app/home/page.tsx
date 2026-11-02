@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import TargetCursor from "../../components/TargetCursor";
 import { Iphone } from "@/components/ui/iphone";
 import ProfileCard from "@/components/ui/profile-card";
+import { LiquidMetalButton } from "@/components/ui/liquid-metal";
 
 const Lanyard = dynamic(() => import("@/components/ui/Lanyard"), {
   ssr: false,
@@ -179,11 +180,12 @@ export default function StudioHome() {
   const [activeIndex, setActiveIndex] = useState(4);
   const [audioLanguage, setAudioLanguage] = useState<"hindi" | "dub">("dub");
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const [isSwitching, setIsSwitching] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [contactOpen, setContactOpen] = useState(false);
+  const [resumeOpen, setResumeOpen] = useState(false);
   const [contactClosing, setContactClosing] = useState(false);
   const [journeyIndex, setJourneyIndex] = useState(0);
   const [journeyFromIndex, setJourneyFromIndex] = useState(0);
@@ -193,6 +195,7 @@ export default function StudioHome() {
   const contactButtonRef = useRef<HTMLButtonElement | null>(null);
   const contactDialogRef = useRef<HTMLDivElement | null>(null);
   const contactCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hireQuoteDotMatrixRef = useRef<HTMLDivElement | null>(null);
   const journeyMotionTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const playingRef = useRef(true);
   const pendingTimeRef = useRef<number | null>(null);
@@ -258,8 +261,18 @@ export default function StudioHome() {
     playingRef.current = isPlaying;
     const video = videoRef.current;
     if (!video) return;
-    if (isPlaying) void video.play().catch(() => setIsPlaying(false));
-    else video.pause();
+    video.muted = isMuted;
+    if (isPlaying) {
+      void video.play().catch(() => {
+        if (!video.muted) {
+          video.muted = true;
+          setIsMuted(true);
+          void video.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+        } else {
+          setIsPlaying(false);
+        }
+      });
+    } else video.pause();
   }, [isPlaying]);
 
   useEffect(() => {
@@ -296,7 +309,17 @@ export default function StudioHome() {
         setCurrentTime(video.currentTime);
       }
       setDuration(Number.isFinite(video.duration) ? video.duration : 0);
-      if (playingRef.current) void video.play().catch(() => setIsPlaying(false));
+      if (playingRef.current) {
+        void video.play().catch(() => {
+          if (!video.muted) {
+            video.muted = true;
+            setIsMuted(true);
+            void video.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+          } else {
+            setIsPlaying(false);
+          }
+        });
+      }
       revealTimer = setTimeout(() => setIsSwitching(false), 180);
     };
     video.addEventListener("loadeddata", onReady, { once: true });
@@ -320,6 +343,16 @@ export default function StudioHome() {
   };
 
   const hideDotMatrix = () => dotMatrixRef.current?.classList.remove("is-visible");
+  const onHireQuotePointerMove = (event: PointerEvent<HTMLElement>) => {
+    if (event.pointerType === "touch") return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const dotMatrix = hireQuoteDotMatrixRef.current;
+    if (!dotMatrix) return;
+    dotMatrix.style.setProperty("--pointer-x", `${event.clientX - rect.left}px`);
+    dotMatrix.style.setProperty("--pointer-y", `${event.clientY - rect.top}px`);
+    dotMatrix.classList.add("is-visible");
+  };
+  const hideHireQuoteDotMatrix = () => hireQuoteDotMatrixRef.current?.classList.remove("is-visible");
   const switchLanguage = (language: "hindi" | "dub") => {
     if (language === audioLanguage) return;
     pendingTimeRef.current = videoRef.current?.currentTime ?? currentTime;
@@ -373,7 +406,14 @@ export default function StudioHome() {
       />}
       <header className="home-nav">
         <SatvicBrand />
-        <button ref={contactButtonRef} className={`chance-button cursor-target${contactOpen ? " is-contact-open" : ""}`} data-cursor-label="Contact me" type="button" aria-label="Contact me" aria-haspopup="dialog" aria-expanded={contactOpen} onClick={() => {
+        <div className="home-nav-actions">
+        <button className="chance-button resume-nav-button cursor-target" data-cursor-label="View my resume" type="button" aria-label="View my resume" aria-haspopup="dialog" aria-expanded={resumeOpen} onClick={() => setResumeOpen(true)}>
+          <span>Resume</span>
+          <span className="chance-button-icon resume-nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M7 3h7l5 5v13H7zM14 3v6h5M10 14h6M10 17h6" /></svg>
+          </span>
+        </button>
+        <button ref={contactButtonRef} className={`chance-button contact-nav-button cursor-target${contactOpen ? " is-contact-open" : ""}`} data-cursor-label="Contact me" type="button" aria-label="Contact me" aria-haspopup="dialog" aria-expanded={contactOpen} onClick={() => {
           const rect = contactButtonRef.current?.getBoundingClientRect();
           if (rect) setContactOrigin({ x: rect.left + rect.width / 2 - window.innerWidth / 2, y: rect.top + rect.height / 2 - window.innerHeight / 2 });
           setContactClosing(false);
@@ -384,8 +424,10 @@ export default function StudioHome() {
             <svg viewBox="0 0 24 24" fill="none">
               <path d="M5 12h14M13 5l7 7-7 7" />
             </svg>
+            <svg className="contact-phone-icon" viewBox="0 0 24 24" fill="none"><path d="M7.2 3.8 9.7 7l-1.6 2.1a14.1 14.1 0 0 0 6.8 6.8l2.1-1.6 3.2 2.5-.8 3.1c-.2.8-1 1.3-1.8 1.2C9.9 20 4 14.1 2.9 6.4c-.1-.8.4-1.6 1.2-1.8l3.1-.8Z" /></svg>
           </span>
         </button>
+        </div>
       </header>
       <section
         className="home-canvas"
@@ -400,7 +442,9 @@ export default function StudioHome() {
         onPointerCancel={() => { swipeStartRef.current = null; }}
       >
         <div ref={dotMatrixRef} className="dot-matrix" aria-hidden="true" />
-        <h2 className="demo-showcase-title">Some Demo Videos</h2>
+        <h2 id="work" className="demo-showcase-title">My First Six Months: Bringing Satvic to More Languages</h2>
+        <p className="demo-showcase-subtitle">Working with the founder to dub Satvic videos for regional audiences.</p>
+        <p className="demo-showcase-instruction"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z" /><path d="M17 9a5 5 0 0 1 0 6m2-9a9 9 0 0 1 0 12" /></svg><span><strong>Press play, then turn on sound</strong> to hear the regional dub.</span></p>
         <div className="demo-showcase">
         <div className="video-carousel" aria-label="Language video carousel">
           {[-3, -2, -1, 1, 2, 3].map(offset => {
@@ -462,7 +506,22 @@ export default function StudioHome() {
               <button className="cursor-target" data-cursor-label={isPlaying ? "Pause" : "Play"} type="button" onClick={() => setIsPlaying(value => !value)} aria-label={isPlaying ? "Pause video" : "Play video"}>
                 <span className="phone-action-icon"><svg viewBox="0 0 16 16" aria-hidden="true">{isPlaying ? <rect x="3" y="3" width="10" height="10" rx="1.5" /> : <path d="M5 3.5 13 8l-8 4.5z" />}</svg></span>{isPlaying ? "Pause" : "Play"}
               </button>
-              <button className="cursor-target" data-cursor-label={isMuted ? "Unmute" : "Mute"} type="button" onClick={() => setIsMuted(value => !value)} aria-label={isMuted ? "Unmute video" : "Mute video"} aria-pressed={isMuted}>
+              <button className="cursor-target" data-cursor-label={isMuted ? "Unmute" : "Mute"} type="button" onClick={() => {
+                const video = videoRef.current;
+                if (isMuted) {
+                  if (video) {
+                    video.muted = false;
+                    void video.play().then(() => setIsPlaying(true)).catch(() => {
+                      video.muted = true;
+                      setIsMuted(true);
+                    });
+                  }
+                  setIsMuted(false);
+                } else {
+                  if (video) video.muted = true;
+                  setIsMuted(true);
+                }
+              }} aria-label={isMuted ? "Unmute video" : "Mute video"} aria-pressed={isMuted}>
                 <span className="phone-action-icon"><svg viewBox="0 0 18 16" aria-hidden="true"><path d="M2 6v4h3l4 3V3L5 6H2Z" />{isMuted ? <path d="m12 6 4 4m0-4-4 4" /> : <path d="M12 6c1.5 1 1.5 3 0 4m2-6c3 2 3 6 0 8" />}</svg></span>{isMuted ? "Muted" : "Sound on"}
               </button>
             </div>
@@ -529,15 +588,33 @@ export default function StudioHome() {
           ))}
         </div>
       </section>
-      <section className="hire-quote-section" aria-labelledby="hire-quote-heading">
-        <div className="hire-quote-content">
-          <h2 id="hire-quote-heading">Why you should hire me</h2>
-          <img className="hire-quote-avatar" src="/profile_pic.jpg" alt="" />
-          <p className="hire-quote-name">Piyush Kumar</p>
-          <blockquote className="hire-quote">
-            <p>I bring curiosity, care, and a hands-on approach to every project.</p>
-            <p>I turn thoughtful ideas into clear, useful experiences people enjoy.</p>
-          </blockquote>
+      <section className="hire-quote-section" aria-labelledby="hire-quote-heading" onPointerMove={onHireQuotePointerMove} onPointerLeave={hideHireQuoteDotMatrix}>
+        <div ref={hireQuoteDotMatrixRef} className="dot-matrix hire-quote-dot-matrix" aria-hidden="true" />
+        <div className="hire-fit-layout">
+          <div className="hire-fit-copy">
+            <span className="hire-fit-kicker">FOUNDER'S OFFICE · ROLE FIT</span>
+            <h2 id="hire-quote-heading">Looking for these skills? I’m the best fit for the Founder’s Office.</h2>
+            <ul className="hire-fit-points">
+              <li><span className="hire-fit-number">01</span><span><strong>I take work from idea to delivery.</strong> I co-founded Mivyapar, led a seven-person team, and handled client work through execution.</span></li>
+              <li><span className="hire-fit-number">02</span><span><strong>I learn by building.</strong> My AI brochure generator cut document creation from hours to under ten minutes.</span></li>
+              <li><span className="hire-fit-number">03</span><span><strong>I use evidence to make decisions.</strong> Meta campaigns I managed grew engagement by 40% and leads by 38% on an approximately $435 budget.</span></li>
+              <li><span className="hire-fit-number">04</span><span><strong>I am ready to run the dubbing rollout.</strong> I can coordinate voice cloning, language reviews, and publishing for Tamil, Telugu, and Kannada.</span></li>
+            </ul>
+          </div>
+          <div className="hire-tool-groups">
+            <div className="hire-tool-group" aria-label="AI tools I use">
+              <p>AI TOOLS</p>
+              <div><img src="https://cdn.simpleicons.org/anthropic" alt="" /><span>Claude</span></div>
+              <div><img src="https://cdn.simpleicons.org/openai" alt="" /><span>GPT</span></div>
+              <div><img src="https://cdn.simpleicons.org/googlegemini" alt="" /><span>Gemini</span></div>
+            </div>
+            <div className="hire-tool-group" aria-label="Development and marketing tools I use">
+              <p>DEVELOPMENT &amp; MARKETING</p>
+              <div><img src="https://cdn.simpleicons.org/django" alt="" /><span>Django</span></div>
+              <div><img src="https://cdn.simpleicons.org/mongodb" alt="" /><span>MongoDB</span></div>
+              <div><img src="https://cdn.simpleicons.org/meta" alt="" /><span>Meta Ads</span></div>
+            </div>
+          </div>
         </div>
       </section>
       <section className="hire-section hire-id-section" aria-labelledby="hire-heading">
@@ -577,6 +654,19 @@ export default function StudioHome() {
             </ol>
           </div>
         </div>
+        <div className="hire-portfolio-action">
+          <LiquidMetalButton
+            className="hire-portfolio-button"
+            size="md"
+            borderWidth={3}
+            metalConfig={{ colorBack: "#3157e8", colorTint: "#ffffff", speed: 0.35, repetition: 3, distortion: 0.12 }}
+            icon={<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>}
+            aria-label="View my Product Management Associate application portfolio"
+            onClick={() => window.open("https://satvic-movement-pma.vercel.app", "_blank", "noopener,noreferrer")}
+          >
+            View my PMA portfolio
+          </LiquidMetalButton>
+        </div>
       </section>
       {contactOpen && typeof document !== "undefined" && createPortal(
         <div className={`profile-dialog-backdrop${contactClosing ? " is-closing" : ""}`} onMouseDown={event => { if (event.target === event.currentTarget) closeContact(); }}>
@@ -592,6 +682,34 @@ export default function StudioHome() {
               phoneNumber="8822550747"
               emailAddress="piyushkumaryadav2027@gmail.com"
               avatarUrl="/profile_pic.jpg"
+              holo={0.8}
+              glare={0.5}
+              tiltStrength={12}
+              parallax={8}
+              radius={16}
+              enableTilt
+              intro
+              showUserInfo
+              theme="dark"
+            />
+          </div>
+        </div>,
+        document.body,
+      )}
+      {resumeOpen && typeof document !== "undefined" && createPortal(
+        <div className="profile-dialog-backdrop resume-dialog-backdrop" onMouseDown={event => { if (event.target === event.currentTarget) setResumeOpen(false); }}>
+          <div className="profile-dialog resume-dialog" role="dialog" aria-modal="true" aria-label="My resume">
+            <button className="profile-dialog-close" type="button" aria-label="Close resume" onClick={() => setResumeOpen(false)}>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+            </button>
+            <ProfileCard
+              name="Piyush Kumar"
+              title="Resume"
+              handle=""
+              status=""
+              documentPreviewUrl="/satvic-movement-founder-office.pdf"
+              actionHref="/satvic-movement-founder-office.pdf"
+              actionLabel="Download my resume"
               holo={0.8}
               glare={0.5}
               tiltStrength={12}
