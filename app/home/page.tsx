@@ -673,7 +673,7 @@ export default function StudioHome() {
             aria-label="View my Product Management Associate application portfolio"
             onClick={() => window.open("https://satvic-movement-pma.vercel.app", "_blank", "noopener,noreferrer")}
           >
-            View my PMA portfolio
+            View my Associate Product Management portfolio
           </LiquidMetalButton>
         </div>
       </section>
