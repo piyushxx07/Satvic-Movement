@@ -185,7 +185,6 @@ export default function StudioHome() {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [contactOpen, setContactOpen] = useState(false);
-  const [resumeOpen, setResumeOpen] = useState(false);
   const [contactClosing, setContactClosing] = useState(false);
   const [journeyIndex, setJourneyIndex] = useState(0);
   const [journeyFromIndex, setJourneyFromIndex] = useState(0);
@@ -407,12 +406,6 @@ export default function StudioHome() {
       <header className="home-nav">
         <SatvicBrand />
         <div className="home-nav-actions">
-        <button className="chance-button resume-nav-button cursor-target" data-cursor-label="View my resume" type="button" aria-label="View my resume" aria-haspopup="dialog" aria-expanded={resumeOpen} onClick={() => setResumeOpen(true)}>
-          <span>Resume</span>
-          <span className="chance-button-icon resume-nav-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M7 3h7l5 5v13H7zM14 3v6h5M10 14h6M10 17h6" /></svg>
-          </span>
-        </button>
         <button ref={contactButtonRef} className={`chance-button contact-nav-button cursor-target${contactOpen ? " is-contact-open" : ""}`} data-cursor-label="Contact me" type="button" aria-label="Contact me" aria-haspopup="dialog" aria-expanded={contactOpen} onClick={() => {
           const rect = contactButtonRef.current?.getBoundingClientRect();
           if (rect) setContactOrigin({ x: rect.left + rect.width / 2 - window.innerWidth / 2, y: rect.top + rect.height / 2 - window.innerHeight / 2 });
@@ -595,17 +588,17 @@ export default function StudioHome() {
             <span className="hire-fit-kicker">FOUNDER'S OFFICE · ROLE FIT</span>
             <h2 id="hire-quote-heading">Looking for these skills? I’m the best fit for the Founder’s Office.</h2>
             <ul className="hire-fit-points">
-              <li><span className="hire-fit-number">01</span><span><strong>I take work from idea to delivery.</strong> I co-founded Mivyapar, led a seven-person team, and handled client work through execution.</span></li>
-              <li><span className="hire-fit-number">02</span><span><strong>I learn by building.</strong> My AI brochure generator cut document creation from hours to under ten minutes.</span></li>
-              <li><span className="hire-fit-number">03</span><span><strong>I use evidence to make decisions.</strong> Meta campaigns I managed grew engagement by 40% and leads by 38% on an approximately $435 budget.</span></li>
-              <li><span className="hire-fit-number">04</span><span><strong>I am ready to run the dubbing rollout.</strong> I can coordinate voice cloning, language reviews, and publishing for Tamil, Telugu, and Kannada.</span></li>
+              <li><span className="hire-fit-number">01</span><span><strong>From Idea to Execution –</strong> Built this entire website in one day and created AI dubbing samples in under an hour. Imagine what I could accomplish with a full-time opportunity.</span></li>
+              <li><span className="hire-fit-number">02</span><span><strong>Ownership &amp; Initiative –</strong> I don't wait for someone to push me. I take responsibility, figure things out and make sure the work gets done.</span></li>
+              <li><span className="hire-fit-number">03</span><span><strong>Language &amp; Cultural Understanding –</strong> Coming from an Army background, I've lived in Punjab, Lucknow, Assam and Pune. I've seen how language influences the way people connect and understand each other.</span></li>
+              <li><span className="hire-fit-number">04</span><span><strong>Research, Problem Solving &amp; Technology –</strong> I love exploring new ideas and finding ways to turn them into reality using research, technology and AI.</span></li>
             </ul>
           </div>
           <div className="hire-tool-groups">
             <div className="hire-tool-group" aria-label="AI and automation tools">
               <p>AI &amp; AUTOMATION</p>
               <div><img src="https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/claude.svg" alt="" /><span>Claude</span></div>
-              <div><img src="https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/openai.svg" alt="" /><span>ChatGPT</span></div>
+              <div><img src="/tool-logos/chatgpt.svg" alt="" /><span>ChatGPT</span></div>
               <div><img src="https://cdn.simpleicons.org/elevenlabs" alt="" /><span>ElevenLabs</span></div>
               <div><img src="https://cdn.simpleicons.org/make" alt="" /><span>Make.com</span></div>
               <div><img src="https://cdn.simpleicons.org/perplexity" alt="" /><span>Perplexity</span></div>
@@ -620,14 +613,14 @@ export default function StudioHome() {
             <div className="hire-tool-group" aria-label="Design and media tools">
               <p>DESIGN &amp; MEDIA</p>
               <div><img src="https://cdn.simpleicons.org/figma" alt="" /><span>Figma</span></div>
-              <div><img src="https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/canva.svg" alt="" /><span>Canva</span></div>
-              <div><img src="https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/descript.svg" alt="" /><span>Descript</span></div>
-              <div><img src="https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/adobepremierepro.svg" alt="" /><span>Premiere Pro</span></div>
+              <div><img src="/tool-logos/canva.svg" alt="" /><span>Canva</span></div>
+              <div><img src="/tool-logos/descript.svg" alt="" /><span>Descript</span></div>
+              <div><img src="/tool-logos/premiere-pro.svg" alt="" /><span>Premiere Pro</span></div>
             </div>
             <div className="hire-tool-group" aria-label="Data and finance tools">
               <p>DATA &amp; FINANCE</p>
               <div><img src="https://cdn.simpleicons.org/googlesheets" alt="" /><span>Google Sheets</span></div>
-              <div><img src="https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/microsoftexcel.svg" alt="" /><span>Excel</span></div>
+              <div><img src="/tool-logos/excel.svg" alt="" /><span>Excel</span></div>
               <div><img src="https://cdn.simpleicons.org/metabase" alt="" /><span>Metabase</span></div>
             </div>
           </div>
@@ -698,34 +691,6 @@ export default function StudioHome() {
               phoneNumber="8822550747"
               emailAddress="piyushkumaryadav2027@gmail.com"
               avatarUrl="/profile_pic.jpg"
-              holo={0.8}
-              glare={0.5}
-              tiltStrength={12}
-              parallax={8}
-              radius={16}
-              enableTilt
-              intro
-              showUserInfo
-              theme="dark"
-            />
-          </div>
-        </div>,
-        document.body,
-      )}
-      {resumeOpen && typeof document !== "undefined" && createPortal(
-        <div className="profile-dialog-backdrop resume-dialog-backdrop" onMouseDown={event => { if (event.target === event.currentTarget) setResumeOpen(false); }}>
-          <div className="profile-dialog resume-dialog" role="dialog" aria-modal="true" aria-label="My resume">
-            <button className="profile-dialog-close" type="button" aria-label="Close resume" onClick={() => setResumeOpen(false)}>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
-            </button>
-            <ProfileCard
-              name="Piyush Kumar"
-              title="Resume"
-              handle=""
-              status=""
-              documentPreviewUrl="/satvic-movement-founder-office.pdf"
-              actionHref="/satvic-movement-founder-office.pdf"
-              actionLabel="Download my resume"
               holo={0.8}
               glare={0.5}
               tiltStrength={12}
